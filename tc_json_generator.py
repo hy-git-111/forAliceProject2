@@ -12,9 +12,8 @@ class PromptGenerator:
                 "https://www.googleapis.com/auth/drive.readonly"
             ]
 
-            base_dir = os.path.dirname(os.path.abspath(__file__))
+            base_dir = os.getcwd()
             creds_file = os.path.join(base_dir, "credentials.json")
-            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = creds_file
 
             if not creds_file:
                 raise ValueError("GOOGLE_APPLICATION_CREDENTIALS 환경 변수가 설정되지 않았습니다.")
