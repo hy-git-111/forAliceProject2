@@ -1,0 +1,22 @@
+# 웹 요소 로케이터 목록
+
+## 로그인 페이지
+
+| 요소 | 타입 | 로케이터 |
+|------|------|----------|
+| 루트 컨테이너 | ID | root |
+| 네비게이션 바 | CSS | .navbar.navbar-light |
+| 브랜드 로고 링크 | CSS | .navbar-brand |
+| 네비게이션 메뉴 | CSS | .nav.navbar-nav |
+| 홈 링크 | CSS | .nav-link[href="/"] |
+| 로그인 링크 | CSS | .nav-link[href="/login"] |
+| 회원가입 링크 | CSS | .nav-link[href="/register"] |
+| 인증 페이지 컨테이너 | CSS | .auth-page |
+| 페이지 컨테이너 | CSS | .container.page |
+| 페이지 제목 | CSS | .text-xs-center h1 |
+| 회원가입 안내 텍스트 | CSS | .text-xs-center p |
+| 회원가입 링크(본문) | CSS | .text-xs-center a |
+| 로그인 폼 | CSS | .auth-page form |
+| 이메일 입력 필드 | CSS | input[type="email"] |
+| 비밀번호 입력 필드 | CSS | input[type="password"] |
+| 로그인 버튼 | CSS | .btn.btn-lg.btn-primary |

@@ -1,0 +1,20 @@
+```markdown
+# 웹 요소 로케이터 목록
+
+## 홈페이지 네비게이션
+
+| 요소 | 타입 | 로케이터 |
+|------|------|----------|
+| 루트 컨테이너 | ID | root |
+| 네비게이션 바 | CSS | .navbar.navbar-light |
+| 브랜드 로고 링크 | CSS | .navbar-brand |
+| 네비게이션 메뉴 | CSS | .nav.navbar-nav.pull-xs-right |
+| 홈 링크 | CSS | .nav-item:nth-child(1) .nav-link |
+| 새 포스트 링크 | CSS | .nav-item:nth-child(2) .nav-link |
+| 새 포스트 아이콘 | CSS | .ion-compose |
+| 설정 링크 | CSS | .nav-item:nth-child(3) .nav-link |
+| 설정 아이콘 | CSS | .ion-gear-a |
+| 프로필 링크 | CSS | .nav-item:nth-child(4) .nav-link |
+| 프로필 이미지 | CSS | .user-pic |
+| 번들 스크립트 | XPATH | //script[@src='/static/js/bundle.js'] |
+```

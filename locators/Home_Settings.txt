@@ -1,0 +1,41 @@
+```markdown
+# 웹 요소 로케이터 목록
+
+## 홈 페이지
+
+| 요소 | 타입 | 로케이터 |
+|------|------|----------|
+| 루트 컨테이너 | ID | root |
+| 네비게이션 바 | CSS | .navbar.navbar-light |
+| 브랜드 로고 링크 | CSS | .navbar-brand |
+| 홈 링크 | CSS | .nav-link[href="/"] |
+| 새 포스트 링크 | CSS | .nav-link[href="/editor"] |
+| 설정 링크 | CSS | .nav-link[href="/settings"] |
+| 프로필 링크 | CSS | .nav-link[href="/@5"] |
+| 사용자 프로필 이미지 | CSS | .user-pic |
+| 홈페이지 컨테이너 | CSS | .home-page |
+| 피드 토글 | CSS | .feed-toggle |
+| Your Feed 링크 | CSS | .nav-link.active |
+| Global Feed 링크 | CSS | .nav-link:not(.active) |
+| 아티클 미리보기 | CSS | .article-preview |
+| 아티클 메타 정보 | CSS | .article-meta |
+| 작성자 프로필 이미지 | CSS | .article-meta img |
+| 작성자 이름 링크 | CSS | .author |
+| 날짜 표시 | CSS | .date |
+| 좋아요 버튼 (활성화) | CSS | .btn.btn-sm.btn-primary |
+| 좋아요 버튼 (비활성화) | CSS | .btn.btn-sm.btn-outline-primary |
+| 좋아요 아이콘 | CSS | .ion-heart |
+| 아티클 미리보기 링크 | CSS | .preview-link |
+| 아티클 제목 | CSS | .preview-link h1 |
+| 아티클 소개 | CSS | .preview-link p |
+| Read more 링크 | CSS | .preview-link span |
+| 태그 목록 | CSS | .tag-list |
+| 태그 아이템 | CSS | .tag-default.tag-pill.tag-outline |
+| 페이지네이션 | CSS | .pagination |
+| 활성화된 페이지 아이템 | CSS | .page-item.active |
+| 페이지 링크 | CSS | .page-link |
+| 사이드바 | CSS | .sidebar |
+| 인기 태그 제목 | CSS | .sidebar p |
+| 인기 태그 목록 | CSS | .sidebar .tag-list |
+| 인기 태그 아이템 | CSS | .sidebar .tag-default.tag-pill |
+```
