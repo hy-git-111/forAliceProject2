@@ -10,7 +10,7 @@ load_dotenv(override=True)
 # .env에서 GEMINI_API_KEY 값을 정확히 불러옴
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 
-def generate_with_gemini(prompt: str, llm_payload) -> str:
+def generate_with_gemini(prompt: str, llm_payload="") -> str:
     """
     Gemini API를 사용하여 응답을 생성합니다.
     :param prompt: 프롬프트 문자열
@@ -26,7 +26,13 @@ def generate_with_gemini(prompt: str, llm_payload) -> str:
                 "temperature": 0.2,         # 온도 설정
             }
         )
-        response = model.generate_content(prompt + llm_payload)
+
+        if llm_payload.strip():
+            full_content = f"{prompt}\n\n---\n\n{llm_payload}"
+        else:
+            full_content = prompt  # 구분자 넣지 않음
+
+        response = model.generate_content(full_content)
         print(f"제미나이 호출 완료:{prompt}")
         return response.text.strip()
     except Exception as e:
