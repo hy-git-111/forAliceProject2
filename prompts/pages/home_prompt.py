@@ -11,10 +11,10 @@ HOME_PAGE_PROMPT = COMMON_PAGE_CONTEXT + """
 - qa-realworld-automation/pages/home_page.py
 
 📌 로케이터 사용 규칙:
-- 로케이터는 qa-realworld-automation/locators/home_page_locators.py에 정의되어 있다고 가정합니다.
+- 로케이터는 qa-realworld-automation/locators/home_locators.py에 정의되어 있다고 가정합니다.
 - 다음과 같이 import해서 사용해야 합니다:
 
-  from locators.home_page_locators import HomePageLocators as Loc
+  from locators.home_locators import HomePageLocators as Loc
 
 - 모든 요소는 Loc.GLOBAL_TAB, Loc.TAG_ITEM 등으로 접근하며 클래스 내부에 직접 정의하지 마세요.
 
@@ -28,7 +28,7 @@ HOME_PAGE_PROMPT = COMMON_PAGE_CONTEXT + """
 
 ```python
 from pages.base_page import BasePage
-from locators.home_page_locators import HomePageLocators as Loc
+from locators.home_locators import HomePageLocators as Loc
 
 class HomePage(BasePage):
     def __init__(self, driver):

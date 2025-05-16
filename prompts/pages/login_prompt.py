@@ -11,10 +11,10 @@ LOGIN_PAGE_PROMPT = COMMON_PAGE_CONTEXT + """
 - qa-realworld-automation/pages/login_page.py
 
 📌 로케이터 사용 규칙:
-- 로케이터는 qa-realworld-automation/locators/login_page_locators.py에 정의되어 있다고 가정합니다.
+- 로케이터는 qa-realworld-automation/locators/login_locators.py에 정의되어 있다고 가정합니다.
 - 다음과 같이 import해서 사용해야 합니다:
 
-  from locators.login_page_locators import LoginPageLocators as Loc
+  from locators.login_locators import LoginPageLocators as Loc
 
 - 모든 요소는 Loc.EMAIL_INPUT처럼 사용하며, 클래스 내부에 직접 정의하지 마세요.
 
@@ -29,7 +29,7 @@ LOGIN_PAGE_PROMPT = COMMON_PAGE_CONTEXT + """
 ```python
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
-from locators.login_page_locators import LoginPageLocators as Loc
+from locators.login_locators import LoginPageLocators as Loc
 
 class LoginPage(BasePage):
     def __init__(self, driver):

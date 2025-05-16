@@ -1,7 +1,5 @@
 from prompts.common_pages import COMMON_PAGE_CONTEXT
 
-from prompts.common_pages import COMMON_PAGE_CONTEXT
-
 PROFILE_PAGE_PROMPT = COMMON_PAGE_CONTEXT + """
 
 🌟 목표:
@@ -18,10 +16,10 @@ PROFILE_PAGE_PROMPT = COMMON_PAGE_CONTEXT + """
 - qa-realworld-automation/pages/profile_page.py
 
 📌 로케이터 사용 규칙:
-- 로케이터는 qa-realworld-automation/locators/profile_page_locators.py에 정의되어 있다고 가정합니다.
+- 로케이터는 qa-realworld-automation/locators/profile_locators.py에 정의되어 있다고 가정합니다.
 - 다음과 같이 import해서 사용해야 합니다:
 
-  from locators.profile_page_locators import ProfilePageLocators as Loc
+  from locators.profile_locators import ProfilePageLocators as Loc
 
 - 모든 요소는 Loc.XXX 형식으로 사용하고, 클래스 내부에 직접 정의하지 마세요.
 
@@ -36,7 +34,7 @@ PROFILE_PAGE_PROMPT = COMMON_PAGE_CONTEXT + """
 ```python
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
-from locators.profile_page_locators import ProfilePageLocators as Loc
+from locators.profile_locators import ProfilePageLocators as Loc
 
 class ProfilePage(BasePage):
     def __init__(self, driver):
