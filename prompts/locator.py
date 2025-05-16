@@ -1,30 +1,36 @@
 # ✅ locator.py 생성용 프롬프트
 LOCATOR_PROMPT = """
 당신은 selenium + pytest 기반 QA 자동화 엔지니어입니다.
-다음 우선순위 규칙에 따라 **모든 요소의 로케이터를 하나씩 추출해주세요**
+다음 우선순위 규칙에 따라 **모든 요소의 로케이터를 하나씩 추출해주세요.**
+응답에는 코드만 출력하고, 어떤 설명이나 마크다운 서식도 포함하지 마세요.
 
-우선순위 규칙:
-1순위: ID
-2순위: CSS Selector
-3순위: XPATH (ID, CSS가 불가능할 때만 사용) 
+# 우선순위 규칙:
+- 1순위: ID
+- 2순위: CSS Selector ('>' 사용 금지)
+- 3순위: XPATH (ID, CSS가 불가능할 때만 사용) 
 
-출력 형식:
-아래 파이썬 형식으로 각 페이지별 로케이터를 정리해서 출력해주세요.
-문자 사이에 공백을 넣지 말고 일반적인 파이썬 코드로 출력하세요.
-응답 시작, 종료에 대한 안내 없이 **코드만 주세요**
+# 출력 형식:
+- 아래 파이썬 형식으로 각 페이지별 로케이터를 정리해서 출력
+- **클래스명은 반드시 PascalCase**로 작성 (예: LoginPage)
+- **각 페이지의 모든 요소는 하나의 클래스 안에 통합**하여 작성 (중복 클래스 선언 금지)
+- **변수명**은 반드시 **camelCase**로 작성하고, 페이지명을 접두어로 사용 (예: editorLoginInput)
+- pagename = HTML 주석 내용 + "page" (예: editor page)
+- HTML 코드를 분석했을때 주석과 페이지 명이 일치하지 않더라도 주석 내용을 페이지명으로 사용
 
+# 예시코드:
 ```python
-# 웹 요소 로케이터 목록
+## [pagename]
 
-## [페이지명(영문)]
+from selenium.webdriver.common.by import By
 
-페이지명(영문)_LOCATORS = {
-    "username_input": "//input[@id='username']",
-    "password_input": "//input[@id='password']",
-    "login_button": "//button[@type='submit']",
-    "error_message": "//div[@class='error-message']"
-}
+class EditorPage:
+    editorLoginInput = (By.ID, "ID")
+    editorEmailInput = (By.CSS_SELECTOR, "input[type='email'][placeholder='Email']")
+    editorPasswordInput = (By.CSS_SELECTOR, "input[type='password'][placeholder='Password']")
+    editorSubmitInput = (By.CLASS_NAME, "btn-primary")
 ```
 
 아래는 HTML입니다:
 """
+
+
