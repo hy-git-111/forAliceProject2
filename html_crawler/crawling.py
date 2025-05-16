@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from html_crawler.html_base_page import BasePage
 from file_manage import save_data_append
 from html_crawler.user_data import USER_DATA
+import time
 
 class CrawlingPage(BasePage):
     # 로그인하는 함수
@@ -56,7 +57,8 @@ class CrawlingPage(BasePage):
 
         if login_required == True:
             self.login(USER_DATA["email"], USER_DATA["password"])
-        
+            time.sleep(1)
+
         if locator_1:
             self.click_element(locator_1)
             self.wait_for_page_load()
@@ -76,7 +78,6 @@ class CrawlingPage(BasePage):
 def capture_page(title, login_required, locator_1=None, locator_2=None, locator_3=None):
     options = webdriver.ChromeOptions()
     options.add_argument("--headless=new")
-    options.add_argument("--window-size=1920,1080")
 
     driver = webdriver.Chrome(options=options)
     crawling = CrawlingPage(driver)
