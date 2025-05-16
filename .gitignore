@@ -3,3 +3,8 @@ credentials.json
 /backend
 /frontend
 /venv
+/html_crawler/__pycache__
+/google_sheets/__pycache__
+/__pycache__
+/ai_generate/__pycache__
+/prompts/__pycache__
