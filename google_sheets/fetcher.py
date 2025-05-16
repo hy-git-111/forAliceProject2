@@ -15,7 +15,6 @@ class DataFetcher:
     @staticmethod
     def get_worksheet_data():   # 데이터 읽기
         worksheets = GoogleSheetConnector.get_worksheet_list()
-        
         all_data = []
         
         for worksheet in worksheets[1:]:
@@ -25,9 +24,24 @@ class DataFetcher:
                 if not header_row:
                     continue  # 헤더가 없는 경우 건너뛰기
                 
-                # 헤더 기반으로 모든 데이터 가져오기
-                records = worksheet.get_all_records(head=9)
+                # 데이터가 있는 헤더만 선택 (빈 헤더 제외)
+                valid_headers = [header for header in header_row if header]
                 
+                # 헤더 중복 체크
+                if len(valid_headers) != len(set(valid_headers)):
+                    print(f"워크시트 '{worksheet.title}'에 중복된 헤더가 있습니다.")
+                    # 중복 헤더 처리: 고유한 헤더만 유지
+                    unique_headers = []
+                    seen_headers = set()
+                    for header in valid_headers:
+                        if header not in seen_headers:
+                            seen_headers.add(header)
+                            unique_headers.append(header)
+                    valid_headers = unique_headers
+                
+                # 헤더 기반으로 모든 데이터 가져오기 (유효한 헤더만)
+                records = worksheet.get_all_records(head=9, expected_headers=valid_headers)
+                    
                 # "구분" 컬럼이 "자동화"인 행만 필터링
                 filtered_records = [row for row in records if row.get("구분") == "자동화"]
                 

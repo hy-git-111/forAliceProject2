@@ -6,7 +6,7 @@ class GoogleSheetConnector:
     @staticmethod
     def get_worksheet_list():
         try:
-            SHEET_NAME = "Copy of 엘리스_2차_3조_팀프로젝트_사본"
+            SHEET_NAME = "엘리스_2차_3조_팀프로젝트"
             SCOPES = [
                 "https://www.googleapis.com/auth/spreadsheets.readonly",
                 "https://www.googleapis.com/auth/drive.readonly"
