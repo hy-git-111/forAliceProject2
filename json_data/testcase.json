@@ -1,0 +1,9 @@
+{
+    "role": "user",
+    "content": [
+        {
+            "type": "text",
+            "text": "\n테스트 ID: unnamed\n시나리오: \n\n사전 조건:\n1. 회원가입 페이지 (/register) 접속 \n2. 테스트에 사용할 고유 이메일: auto_signup_ok@example.com \n3. 테스트에 사용할 고유 사용자명: auto_signup_ok_user\"\n\n재현 절차:\n1. 사용자명 필드에 auto_signup_ok_user1 입력  \n2. 이메일 필드에 auto_signup_ok1@example.com 입력 \n3. 비밀번호 필드에 P@sswOrd123! 입력 \n4. 'Sign up' 버튼 클릭  \n5. DOM 변화 확인: 네비게이션 바, URL\"\n기대 결과:\n1. 홈 페이지 (/)로 리디렉션 \n(URL 확인: BASE_URL/)  \n2. 네비게이션 바에 auto_signup_ok_user 사용자명 표시 \n(DOM 요소 텍스트 확인) \n3. 네비게이션 바에 \"\"New Post\"\", \"\"Settings\"\", auto_signup_ok_user 링크 표시, \"\"Sign in\"\", \"\"Sign up\"\" 링크 숨김 (DOM 요소 존재/비존재 확인)\"\n"
+        }
+    ]
+}
