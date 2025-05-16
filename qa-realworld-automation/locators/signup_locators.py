@@ -1,17 +1,13 @@
-# 웹 요소 로케이터 목록
+from selenium.webdriver.common.by import By
 
-## [SignupPage]
-
-SignupPage_LOCATORS = {
-    "root": "#root",
-    "navbar_brand": ".navbar-brand",
-    "home_link": "a.nav-link[href='/']",
-    "signin_link": "a.nav-link[href='/login']",
-    "signup_link": "a.nav-link[href='/register']",
-    "signup_header": ".text-xs-center",
-    "have_account_link": "p.text-xs-center > a[href='/login']",
-    "username_input": ".form-control[type='text'][placeholder='Username']",
-    "email_input": ".form-control[type='email'][placeholder='Email']",
-    "password_input": ".form-control[type='password'][placeholder='Password']",
-    "signup_button": ".btn.btn-lg.btn-primary"
-}
+class SignupPage:
+    signupNavbarBrand = (By.CSS_SELECTOR, "a.navbar-brand")
+    signupHomeLink = (By.CSS_SELECTOR, "a.nav-link[href='/']")
+    signupSignInLink = (By.CSS_SELECTOR, "a.nav-link[href='/login']")
+    signupSignUpLink = (By.CSS_SELECTOR, "a.nav-link[href='/register']")
+    signupTitle = (By.CSS_SELECTOR, "h1.text-xs-center")
+    signupHaveAccountLink = (By.CSS_SELECTOR, "p.text-xs-center a")
+    signupUsernameInput = (By.CSS_SELECTOR, "input[type='text'][placeholder='Username']")
+    signupEmailInput = (By.CSS_SELECTOR, "input[type='email'][placeholder='Email']")
+    signupPasswordInput = (By.CSS_SELECTOR, "input[type='password'][placeholder='Password']")
+    signupSubmitButton = (By.CSS_SELECTOR, "button.btn-primary")

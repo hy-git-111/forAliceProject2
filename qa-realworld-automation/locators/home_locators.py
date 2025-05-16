@@ -1,48 +1,47 @@
-# 웹 요소 로케이터 목록
+from selenium.webdriver.common.by import By
 
-## Home
+class HomePage:
+    homeNavbarBrand = (By.CSS_SELECTOR, "a.navbar-brand")
+    homeNavLink = (By.CSS_SELECTOR, "a.nav-link[href='/']")
+    homeNewPostLink = (By.CSS_SELECTOR, "a.nav-link[href='/editor']")
+    homeSettingsLink = (By.CSS_SELECTOR, "a.nav-link[href='/settings']")
+    homeProfileLink = (By.CSS_SELECTOR, "a.nav-link[href='/@1']")
+    homeUserPic = (By.CSS_SELECTOR, "img.user-pic")
+    homeYourFeedLink = (By.CSS_SELECTOR, "a.nav-link.active")
+    homeGlobalFeedLink = (By.CSS_SELECTOR, "a.nav-link:not(.active)")
+    homeArticlePreview = (By.CSS_SELECTOR, "div.article-preview")
+    homeSidebar = (By.CSS_SELECTOR, "div.sidebar")
+    homeTagList = (By.CSS_SELECTOR, "div.tag-list")## HomePage
 
-Home_LOCATORS = {
-    "root": "#root",
-    "navbar_brand": ".navbar-brand",
-    "home_link": ".nav-item:nth-child(1) .nav-link",
-    "signin_link": ".nav-item:nth-child(2) .nav-link",
-    "signup_link": ".nav-item:nth-child(3) .nav-link",
-    "page_title": ".text-xs-center",
-    "need_account_link": ".text-xs-center > a",
-    "email_input": ".form-group:nth-child(1) .form-control",
-    "password_input": ".form-group:nth-child(2) .form-control",
-    "signin_button": ".btn-primary"
-}# 웹 요소 로케이터 목록
+from selenium.webdriver.common.by import By
 
-## [Login]
-
-Login_LOCATORS = {
-    "root": "#root",
-    "navbar_brand": ".navbar-brand",
-    "home_link": ".nav-link[href='/']",
-    "signin_link": ".nav-link[href='/login']",
-    "signup_link": ".nav-link[href='/register']",
-    "signin_header": ".text-xs-center",
-    "need_account_link": ".text-xs-center > a",
-    "email_input": ".form-control[type='email']",
-    "password_input": ".form-control[type='password']",
-    "signin_button": ".btn-primary[type='submit']"
-}
-
-## [Home]
-
-Home_LOCATORS = {
-    "root": "#root",
-    "navbar_brand": ".navbar-brand",
-    "home_link": ".nav-link[href='/']",
-    "new_post_link": ".nav-link[href='/editor']",
-    "settings_link": ".nav-link[href='/settings']",
-    "profile_link": ".nav-link[href='/@1']",
-    "user_pic": ".user-pic",
-    "your_feed_link": ".nav-link.active",
-    "global_feed_link": ".nav-link:not(.active)",
-    "article_preview": ".article-preview",
-    "popular_tags": ".sidebar p",
-    "tag_list": ".tag-list"
-}
+class HomePage:
+    homeRoot = (By.ID, "root")
+    homeNavbar = (By.CSS_SELECTOR, "nav.navbar")
+    homeNavbarBrand = (By.CSS_SELECTOR, "a.navbar-brand")
+    homeNavbarNav = (By.CSS_SELECTOR, "ul.nav.navbar-nav")
+    homeNavItemHome = (By.CSS_SELECTOR, "li.nav-item:nth-child(1)")
+    homeNavLinkHome = (By.CSS_SELECTOR, "a.nav-link[href='/']")
+    homeNavItemNewPost = (By.CSS_SELECTOR, "li.nav-item:nth-child(2)")
+    homeNavLinkNewPost = (By.CSS_SELECTOR, "a.nav-link[href='/editor']")
+    homeIconCompose = (By.CSS_SELECTOR, "i.ion-compose")
+    homeNavItemSettings = (By.CSS_SELECTOR, "li.nav-item:nth-child(3)")
+    homeNavLinkSettings = (By.CSS_SELECTOR, "a.nav-link[href='/settings']")
+    homeIconGear = (By.CSS_SELECTOR, "i.ion-gear-a")
+    homeNavItemProfile = (By.CSS_SELECTOR, "li.nav-item:nth-child(4)")
+    homeNavLinkProfile = (By.CSS_SELECTOR, "a.nav-link[href='/@1']")
+    homeUserPic = (By.CSS_SELECTOR, "img.user-pic")
+    homePageContainer = (By.CSS_SELECTOR, "div.home-page")
+    homeContainerPage = (By.CSS_SELECTOR, "div.container.page")
+    homeRow = (By.CSS_SELECTOR, "div.row")
+    homeColMd9 = (By.CSS_SELECTOR, "div.col-md-9")
+    homeFeedToggle = (By.CSS_SELECTOR, "div.feed-toggle")
+    homeNavPills = (By.CSS_SELECTOR, "ul.nav.nav-pills")
+    homeNavItemYourFeed = (By.CSS_SELECTOR, "li.nav-item:nth-child(1) a.nav-link.active")
+    homeNavItemGlobalFeed = (By.CSS_SELECTOR, "li.nav-item:nth-child(2) a.nav-link")
+    homeArticlePreview = (By.CSS_SELECTOR, "div.article-preview")
+    homeColMd3 = (By.CSS_SELECTOR, "div.col-md-3")
+    homeSidebar = (By.CSS_SELECTOR, "div.sidebar")
+    homePopularTags = (By.CSS_SELECTOR, "div.sidebar p")
+    homeTagList = (By.CSS_SELECTOR, "div.tag-list")
+    homeScript = (By.CSS_SELECTOR, "script[src='/static/js/bundle.js']")

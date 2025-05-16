@@ -1,16 +1,12 @@
-# 웹 요소 로케이터 목록
+from selenium.webdriver.common.by import By
 
-## [LoginPage]
-
-LoginPage_LOCATORS = {
-    "root": "#root",
-    "navbar_brand": ".navbar-brand",
-    "home_link": "a[href='/']",
-    "signin_link": "a[href='/login']",
-    "signup_link": "a[href='/register']",
-    "page_title": ".text-xs-center",
-    "need_account_link": "p.text-xs-center > a",
-    "email_input": ".form-control[type='email']",
-    "password_input": ".form-control[type='password']",
-    "signin_button": ".btn-primary[type='submit']"
-}
+class LoginPage:
+    loginNavbarBrand = (By.CSS_SELECTOR, "a.navbar-brand")
+    loginHomeLink = (By.CSS_SELECTOR, "a.nav-link[href='/']")
+    loginSignInLink = (By.CSS_SELECTOR, "a.nav-link[href='/login']")
+    loginSignUpLink = (By.CSS_SELECTOR, "a.nav-link[href='/register']")
+    loginHeader = (By.CSS_SELECTOR, "h1.text-xs-center")
+    loginNeedAccountLink = (By.CSS_SELECTOR, "p.text-xs-center a")
+    loginEmailInput = (By.CSS_SELECTOR, "input[type='email'][placeholder='Email']")
+    loginPasswordInput = (By.CSS_SELECTOR, "input[type='password'][placeholder='Password']")
+    loginSignInButton = (By.CSS_SELECTOR, "button.btn-primary")

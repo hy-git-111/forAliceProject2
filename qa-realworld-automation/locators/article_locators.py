@@ -1,97 +1,70 @@
-# 웹 요소 로케이터 목록
+## ArticlePage
 
-## [LoginPage]
+from selenium.webdriver.common.by import By
 
-LoginPage_LOCATORS = {
-    "root": "#root",
-    "navbar_brand": ".navbar-brand",
-    "home_link": ".nav-link[href='/']",
-    "signin_link": ".nav-link[href='/login']",
-    "signup_link": ".nav-link[href='/register']",
-    "page_title": ".text-xs-center",
-    "need_account_link": ".text-xs-center > a",
-    "email_input": ".form-control[type='email']",
-    "password_input": ".form-control[type='password']",
-    "signin_button": ".btn-primary[type='submit']"
-}# 웹 요소 로케이터 목록
+class ArticlePage:
+    articleNavbarBrand = (By.CSS_SELECTOR, "a.navbar-brand")
+    articleHomeLink = (By.CSS_SELECTOR, "li.nav-item a.nav-link[href='/']")
+    articleNewPostLink = (By.CSS_SELECTOR, "a.nav-link[href='/editor']")
+    articleSettingsLink = (By.CSS_SELECTOR, "a.nav-link[href='/settings']")
+    articleUserProfileLink = (By.CSS_SELECTOR, "a.nav-link[href='/@1']")
+    articleUserPic = (By.CSS_SELECTOR, "img.user-pic")
+    articleYourFeedLink = (By.CSS_SELECTOR, "a.nav-link.active")
+    articleGlobalFeedLink = (By.CSS_SELECTOR, "li.nav-item a.nav-link:not(.active)")
+    articlePreview = (By.CSS_SELECTOR, "div.article-preview")
+    articlePopularTagsText = (By.CSS_SELECTOR, "div.sidebar p")
+    articleTagList = (By.CSS_SELECTOR, "div.tag-list")## ArticlePage
 
-## [LoginPage]
+from selenium.webdriver.common.by import By
 
-LoginPage_LOCATORS = {
-    "navbar_brand": ".navbar-brand",
-    "home_link": ".nav-link[href='/']",
-    "signin_link": ".nav-link[href='/login']",
-    "signup_link": ".nav-link[href='/register']",
-    "page_title": ".text-xs-center",
-    "need_account_link": "p.text-xs-center > a",
-    "email_input": ".form-control[type='email']",
-    "password_input": ".form-control[type='password']",
-    "signin_button": ".btn-primary[type='submit']"
-}
+class ArticlePage:
+    articleNavbarBrand = (By.CSS_SELECTOR, "a.navbar-brand")
+    articleHomeLink = (By.CSS_SELECTOR, "a.nav-link[href='/']")
+    articleNewPostLink = (By.CSS_SELECTOR, "a.nav-link[href='/editor']")
+    articleSettingsLink = (By.CSS_SELECTOR, "a.nav-link[href='/settings']")
+    articleProfileLink = (By.CSS_SELECTOR, "a.nav-link[href='/@1']")
+    articleUserPic = (By.CSS_SELECTOR, "img.user-pic")
+    articleYourFeedLink = (By.CSS_SELECTOR, "a.nav-link.active")
+    articleGlobalFeedLink = (By.CSS_SELECTOR, "a.nav-link:not(.active)")
+    articlePreviewText = (By.CSS_SELECTOR, "div.article-preview")
+    articlePopularTagsText = (By.CSS_SELECTOR, "div.sidebar p")
+    articleTagList = (By.CSS_SELECTOR, "div.tag-list")
+    articleRootContainer = (By.ID, "root")
+    articleHomePage = (By.CSS_SELECTOR, "div.home-page")
+    articleContainer = (By.CSS_SELECTOR, "div.container.page")## ArticlePage
 
-## [HomePage]
+from selenium.webdriver.common.by import By
 
-HomePage_LOCATORS = {
-    "navbar_brand": ".navbar-brand",
-    "home_link": ".nav-link[href='/']",
-    "new_post_link": ".nav-link[href='/editor']",
-    "settings_link": ".nav-link[href='/settings']",
-    "profile_link": ".nav-link[href='/@1']",
-    "user_pic": ".user-pic",
-    "your_feed_link": ".nav-link.active",
-    "global_feed_link": ".nav-link:not(.active)",
-    "article_preview": ".article-preview",
-    "popular_tags_section": ".sidebar",
-    "tag_list": ".tag-list"
-}# 웹 요소 로케이터 목록
-
-## [LoginPage]
-
-LoginPage_LOCATORS = {
-    "navbar_brand": ".navbar-brand",
-    "home_link": ".nav-link[href='/']",
-    "signin_link": ".nav-link[href='/login']",
-    "signup_link": ".nav-link[href='/register']",
-    "page_title": ".text-xs-center",
-    "need_account_link": "p.text-xs-center > a",
-    "email_input": ".form-control[type='email']",
-    "password_input": ".form-control[type='password']",
-    "signin_button": ".btn-primary[type='submit']"
-}
-
-## [HomePage]
-
-HomePage_LOCATORS = {
-    "navbar_brand": ".navbar-brand",
-    "home_link": ".nav-link[href='/']",
-    "new_post_link": ".nav-link[href='/editor']",
-    "settings_link": ".nav-link[href='/settings']",
-    "profile_link": ".nav-link[href='/@1']",
-    "user_pic": ".user-pic",
-    "your_feed_link": ".nav-link.active",
-    "global_feed_link": ".nav-link:not(.active)",
-    "article_preview": ".article-preview",
-    "popular_tags_section": ".sidebar",
-    "tag_list": ".tag-list"
-}
-
-## [ArticlePage]
-
-ArticlePage_LOCATORS = {
-    "navbar_brand": ".navbar-brand",
-    "home_link": ".nav-link[href='/']",
-    "new_post_link": ".nav-link[href='/editor']",
-    "settings_link": ".nav-link[href='/settings']",
-    "profile_link": ".nav-link[href='/@1']",
-    "article_title": ".banner h1",
-    "author_image": ".article-meta img",
-    "author_name": ".author",
-    "article_date": ".date",
-    "edit_article_button": ".btn-outline-secondary",
-    "delete_article_button": ".btn-outline-danger",
-    "article_content": ".article-content p",
-    "tag_list": ".tag-list",
-    "comment_textarea": ".comment-form textarea",
-    "comment_author_img": ".comment-author-img",
-    "post_comment_button": ".comment-form button"
-}
+class ArticlePage:
+    # Navigation elements
+    articleNavbarBrand = (By.CSS_SELECTOR, "a.navbar-brand")
+    articleHomeLink = (By.CSS_SELECTOR, "a.nav-link[href='/']")
+    articleNewPostLink = (By.CSS_SELECTOR, "a.nav-link[href='/editor']")
+    articleSettingsLink = (By.CSS_SELECTOR, "a.nav-link[href='/settings']")
+    articleProfileLink = (By.CSS_SELECTOR, "a.nav-link[href='/@1']")
+    articleUserPic = (By.CSS_SELECTOR, "img.user-pic")
+    
+    # Home page elements
+    articleYourFeedLink = (By.CSS_SELECTOR, "a.nav-link.active")
+    articleGlobalFeedLink = (By.CSS_SELECTOR, "li.nav-item:nth-child(2) a.nav-link")
+    articlePreviewText = (By.CSS_SELECTOR, "div.article-preview")
+    articlePopularTagsText = (By.CSS_SELECTOR, "div.sidebar p")
+    articleTagList = (By.CSS_SELECTOR, "div.tag-list")
+    
+    # Profile page elements
+    articleUserImg = (By.CSS_SELECTOR, "img.user-img")
+    articleUserName = (By.CSS_SELECTOR, "div.user-info h4")
+    articleEditProfileBtn = (By.CSS_SELECTOR, "a.btn.btn-sm.btn-outline-secondary")
+    articleMyArticlesLink = (By.CSS_SELECTOR, "a.nav-link.active[href='/@1']")
+    articleFavoritedArticlesLink = (By.CSS_SELECTOR, "a.nav-link[href='/@1/favorites']")
+    
+    # Article elements
+    articleAuthorLink = (By.CSS_SELECTOR, "a.author")
+    articleDate = (By.CSS_SELECTOR, "span.date")
+    articleLikeButton = (By.CSS_SELECTOR, "button.btn.btn-sm.btn-outline-primary")
+    articleLikeCount = (By.CSS_SELECTOR, "button.btn.btn-sm.btn-outline-primary")
+    articleTitle = (By.CSS_SELECTOR, "a.preview-link h1")
+    articleDescription = (By.CSS_SELECTOR, "a.preview-link p")
+    articleReadMore = (By.CSS_SELECTOR, "a.preview-link span")
+    articlePreviewTagList = (By.CSS_SELECTOR, "a.preview-link ul.tag-list")
+    articlePreviewLink = (By.CSS_SELECTOR, "a.preview-link")

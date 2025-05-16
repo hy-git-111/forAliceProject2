@@ -1,22 +1,37 @@
-# 웹 요소 로케이터 목록
+## SettingsPage
 
-## [Settings]
+from selenium.webdriver.common.by import By
 
-Settings_LOCATORS = {
-    "root": "#root",
-    "navbar_brand": ".navbar-brand",
-    "home_link": ".nav-item:nth-child(1) .nav-link",
-    "new_post_link": ".nav-item:nth-child(2) .nav-link",
-    "settings_link": ".nav-item:nth-child(3) .nav-link",
-    "profile_link": ".nav-item:nth-child(4) .nav-link",
-    "user_pic": ".user-pic",
-    "settings_page": ".settings-page",
-    "settings_title": ".text-xs-center",
-    "profile_picture_input": ".form-group:nth-child(1) .form-control",
-    "username_input": ".form-group:nth-child(2) .form-control",
-    "bio_textarea": ".form-group:nth-child(3) .form-control",
-    "email_input": ".form-group:nth-child(4) .form-control",
-    "password_input": ".form-group:nth-child(5) .form-control",
-    "update_settings_button": ".btn-primary",
-    "logout_button": ".btn-outline-danger"
-}
+class SettingsPage:
+    settingsNavbarBrand = (By.CSS_SELECTOR, "a.navbar-brand")
+    settingsHomeLink = (By.CSS_SELECTOR, "a.nav-link[href='/']")
+    settingsNewPostLink = (By.CSS_SELECTOR, "a.nav-link[href='/editor']")
+    settingsSettingsLink = (By.CSS_SELECTOR, "a.nav-link[href='/settings']")
+    settingsProfileLink = (By.CSS_SELECTOR, "a.nav-link[href='/@1']")
+    settingsUserPic = (By.CSS_SELECTOR, "img.user-pic")
+    settingsHeader = (By.CSS_SELECTOR, "h1.text-xs-center")
+    settingsProfilePictureInput = (By.CSS_SELECTOR, "input[placeholder='URL of profile picture']")
+    settingsUsernameInput = (By.CSS_SELECTOR, "input[placeholder='Username']")
+    settingsBioTextarea = (By.CSS_SELECTOR, "textarea[placeholder='Short bio about you']")
+    settingsEmailInput = (By.CSS_SELECTOR, "input[type='email'][placeholder='Email']")
+    settingsPasswordInput = (By.CSS_SELECTOR, "input[type='password'][placeholder='New Password']")
+    settingsUpdateButton = (By.CSS_SELECTOR, "button.btn-primary")
+    settingsLogoutButton = (By.CSS_SELECTOR, "button.btn-outline-danger")## SettingsPage
+
+from selenium.webdriver.common.by import By
+
+class SettingsPage:
+    settingsNavbarBrand = (By.CSS_SELECTOR, "a.navbar-brand")
+    settingsHomeLink = (By.CSS_SELECTOR, "a.nav-link[href='/']")
+    settingsNewPostLink = (By.CSS_SELECTOR, "a.nav-link[href='/editor']")
+    settingsSettingsLink = (By.CSS_SELECTOR, "a.nav-link[href='/settings']")
+    settingsProfileLink = (By.CSS_SELECTOR, "a.nav-link[href='/@1']")
+    settingsUserPic = (By.CSS_SELECTOR, "img.user-pic")
+    settingsTitle = (By.CSS_SELECTOR, "h1.text-xs-center")
+    settingsProfilePictureInput = (By.CSS_SELECTOR, "input[placeholder='URL of profile picture']")
+    settingsUsernameInput = (By.CSS_SELECTOR, "input[placeholder='Username']")
+    settingsBioTextarea = (By.CSS_SELECTOR, "textarea[placeholder='Short bio about you']")
+    settingsEmailInput = (By.CSS_SELECTOR, "input[type='email'][placeholder='Email']")
+    settingsPasswordInput = (By.CSS_SELECTOR, "input[type='password'][placeholder='New Password']")
+    settingsUpdateButton = (By.CSS_SELECTOR, "button.btn-primary")
+    settingsLogoutButton = (By.CSS_SELECTOR, "button.btn-outline-danger")
