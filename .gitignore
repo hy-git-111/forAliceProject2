@@ -8,3 +8,4 @@ credentials.json
 /__pycache__
 /ai_generate/__pycache__
 /prompts/__pycache__
+html_crawler/user_data.py
