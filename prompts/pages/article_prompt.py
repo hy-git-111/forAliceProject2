@@ -20,10 +20,10 @@ ARTICLE_PAGE_PROMPT = COMMON_PAGE_CONTEXT + """
 - qa-realworld-automation/pages/article_page.py
 
 📌 로케이터 사용 규칙:
-- 로케이터는 qa-realworld-automation/locators/article_locators.py에 정의되어 있다고 가정합니다.
+- 로케이터는 qa-realworld-automation/locators/article_page_locators.py에 정의되어 있다고 가정합니다.
 - 다음과 같이 import해서 사용해야 합니다:
 
-  from locators.article_locators import ArticlePageLocators as Loc
+  from locators.article_page_locators import ArticlePageLocators as Loc
 
 - 모든 요소는 Loc.XXX 형식으로 사용하고, 클래스 내부에 직접 정의하지 마세요.
 
@@ -38,7 +38,7 @@ ARTICLE_PAGE_PROMPT = COMMON_PAGE_CONTEXT + """
 ```python
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
-from locators.article_locators import ArticlePageLocators as Loc
+from locators.article_page_locators import ArticlePageLocators as Loc
 
 class ArticlePage(BasePage):
     def __init__(self, driver):
