@@ -14,6 +14,19 @@ class HomePage(BasePage):
         super().__init__(driver)
         self.logger = logging.getLogger(__name__)
 
+    def getNavigateUserName(self):
+        """
+        📰 게시글 제목을 가져오는 메서드
+        - 성공 시 텍스트 반환
+        - 실패 시 None 반환 + 에러 로그 출력
+        """
+        try:
+            return self._get_text(Loc.ARTICLE_TITLE)
+        except (TimeoutException) as e:
+            self._log_error(f"네비게이션의 사용자명을을 가져오는 중 오류 발생: {str(e)}")
+            return None
+    
+
     def clickYourFeedTab(self):
         """📰 'Your Feed' 탭 클릭"""
         try:
