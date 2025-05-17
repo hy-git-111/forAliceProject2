@@ -44,7 +44,6 @@ if __name__ == "__main__":
     text_content = formatted_payload["content"][0]["text"]
     result = generate_with_claude(prompt, text_content)
     """
-    print(results)
     save_data_overwrite(results, "json_data", "testcase.json")
 
     
