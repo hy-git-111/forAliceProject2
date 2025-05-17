@@ -10,6 +10,8 @@ COMMON_LIBRARY_CONTEXT = """
 qa-realworld-automation/
 ├── pages/             # 각 페이지의 Page Object 클래스
 │   └── base_page.py   # 모든 페이지가 상속하는 공통 클래스
+├── utils/             # 유틸리티 함수/클래스 (예: 로깅, 헬퍼)
+│   └── logger.py      # 로그 설정 파일
 ├── locators/          # 페이지별 요소 로케이터 (UPPER_SNAKE_CASE)
 ├── config/            # 공통 설정: config.py, conftest.py
 ├── tests/             # pytest 기반 테스트 코드 (각 Page 클래스 import)
