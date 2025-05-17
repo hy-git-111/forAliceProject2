@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
 class SignupPageLocators:
-<<<<<<< Updated upstream
+
     # ───── 네비게이션 바 ─────
     SIGNUP_NAVBAR_BRAND = (By.CSS_SELECTOR, "a.navbar-brand")
     SIGNUP_HOME_LINK = (By.CSS_SELECTOR, "a.nav-link[href='/']")
@@ -19,7 +19,10 @@ class SignupPageLocators:
 
     # ───── 제출 버튼 ─────
     SIGNUP_SUBMIT_BUTTON = (By.CSS_SELECTOR, "button.btn-primary")
-=======
+
+
+
+
     SIGNUP_NAVBAR_BRAND = (By.CSS_SELECTOR, "a.navbar-brand")
     SIGNUP_HOME_LINK = (By.CSS_SELECTOR, "a.nav-link[href='/']")
     SIGNUP_SIGNIN_LINK = (By.CSS_SELECTOR, "a.nav-link[href='/login']")
@@ -30,4 +33,4 @@ class SignupPageLocators:
     SIGNUP_EMAIL_INPUT = (By.CSS_SELECTOR, "input[type='email'][placeholder='Email']")
     SIGNUP_PASSWORD_INPUT = (By.CSS_SELECTOR, "input[type='password'][placeholder='Password']")
     SIGNUP_SUBMIT_BUTTON = (By.CSS_SELECTOR, "button.btn-primary[type='submit']")
->>>>>>> Stashed changes
+
