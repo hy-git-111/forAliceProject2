@@ -1,8 +1,8 @@
 pipeline {
   agent {
     docker {
-      image 'python:3.10'    // ✅ pip 포함된 환경
-      args '-u root'         // ✅ root 권한으로 pip install 허용
+      image 'python:3.10'
+      args '-u root'
     }
   }
 
@@ -10,6 +10,7 @@ pipeline {
     stage('Git Clone') {
       steps {
         sh 'git --version'
+        sh 'rm -rf forAliceProject2' // ✅ 여기 추가됨
         sh 'git clone https://github.com/hy-git-111/forAliceProject2.git'
         sh 'ls forAliceProject2'
       }
