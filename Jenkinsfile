@@ -1,13 +1,13 @@
 pipeline {
   agent {
-    docker {
-      image 'python:3.10'
-      args '-u root' // root 권한으로 pip install 허용
+    dockerfile {
+      filename 'Dockerfile'
+      dir '.'
     }
   }
 
   environment {
-    PYTHONUNBUFFERED = '1' // 실시간 로그 출력
+    PYTHONUNBUFFERED = '1'
   }
 
   stages {
@@ -15,14 +15,6 @@ pipeline {
       steps {
         echo '📁 reports 폴더 미리 생성'
         sh 'mkdir -p qa-realworld-automation/reports'
-      }
-    }
-
-    stage('Install dependencies') {
-      steps {
-        echo '📦 requirements.txt로 패키지 설치'
-        sh 'pip install --upgrade pip'
-        sh 'pip install -r qa-realworld-automation/requirements.txt'
       }
     }
 
