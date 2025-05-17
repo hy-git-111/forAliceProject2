@@ -1,9 +1,0 @@
-[
-    {
-      "user_name": "auto_signup_ok_user",
-      "email": "auto_signup_ok@example.com",
-      "password": "P@sswOrd123!",
-      "expected_result": "로그인 성공 후 관리자 대시보드 접근 가능"
-    }
-  ]
-  
