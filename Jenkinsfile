@@ -1,27 +1,26 @@
 pipeline {
   agent {
-    dockerfile {
-      filename 'Dockerfile'
-      dir '.'
+    docker {
+      image 'python:3.10'    // ✅ pip 포함된 환경
+      args '-u root'         // ✅ root 권한으로 pip install 허용
     }
-  }
-
-  environment {
-    PYTHONUNBUFFERED = '1'
   }
 
   stages {
-    stage('Set up workspace') {
+    stage('Git Clone') {
       steps {
-        echo '📁 reports 폴더 미리 생성'
-        sh 'mkdir -p qa-realworld-automation/reports'
+        sh 'git --version'
+        sh 'git clone https://github.com/hy-git-111/forAliceProject2.git'
+        sh 'ls forAliceProject2'
       }
     }
 
-    stage('Run tests') {
+    stage('Run Tests') {
       steps {
-        echo '🧪 pytest 테스트 실행'
-        sh 'pytest qa-realworld-automation/tests --maxfail=1 --disable-warnings -v'
+        dir('forAliceProject2') {
+          sh 'pip install -r qa-realworld-automation/requirements.txt'
+          sh 'pytest qa-realworld-automation/tests --maxfail=1 --disable-warnings -v'
+        }
       }
     }
   }
