@@ -9,28 +9,24 @@ class ProfilePage(BasePage):
         super().__init__(driver)
     
     def getUsername(self):
-        # 사용자 이름을 가져오는 메서드
         try:
-            return self._get_text(Loc.USERNAME)
+            return self._get_text(Loc.PROFILE_USERNAME)
         except (TimeoutException, NoSuchElementException) as e:
             self._log_error(f"사용자 이름을 가져오는데 실패했습니다: {str(e)}")
             return None
     
     def getUserBio(self):
-        # 사용자 자기소개를 가져오는 메서드
         try:
-            return self._get_text(Loc.USER_BIO)
+            return self._get_text(Loc.PROFILE_USER_BIO)
         except (TimeoutException, NoSuchElementException) as e:
             self._log_error(f"사용자 자기소개를 가져오는데 실패했습니다: {str(e)}")
             return None
     
     def clickFollowButton(self):
-        # Follow 버튼을 클릭하는 메서드
         try:
-            self._click(Loc.FOLLOW_BUTTON)
-            # 버튼 클릭 후 상태 변화 대기
+            self._click(Loc.PROFILE_FAVORITE_BTN)
             WebDriverWait(self.driver, 10).until(
-                EC.text_to_be_present_in_element(Loc.FOLLOW_BUTTON, "Unfollow")
+                EC.text_to_be_present_in_element(Loc.PROFILE_FAVORITE_BTN, "Unfollow")
             )
             return True
         except (TimeoutException, NoSuchElementException) as e:
@@ -38,12 +34,10 @@ class ProfilePage(BasePage):
             return False
     
     def clickUnfollowButton(self):
-        # Unfollow 버튼을 클릭하는 메서드
         try:
-            self._click(Loc.UNFOLLOW_BUTTON)
-            # 버튼 클릭 후 상태 변화 대기
+            self._click(Loc.PROFILE_FAVORITE_BTN)
             WebDriverWait(self.driver, 10).until(
-                EC.text_to_be_present_in_element(Loc.UNFOLLOW_BUTTON, "Follow")
+                EC.text_to_be_present_in_element(Loc.PROFILE_FAVORITE_BTN, "Follow")
             )
             return True
         except (TimeoutException, NoSuchElementException) as e:
@@ -51,14 +45,12 @@ class ProfilePage(BasePage):
             return False
     
     def isFollowing(self):
-        # 현재 사용자를 팔로우 중인지 확인하는 메서드
         try:
-            button_text = self._get_text(Loc.FOLLOW_BUTTON)
+            button_text = self._get_text(Loc.PROFILE_FAVORITE_BTN)
             return "Unfollow" in button_text
         except (TimeoutException, NoSuchElementException) as e:
             self._log_error(f"팔로우 상태 확인에 실패했습니다: {str(e)}")
             return False
-    
+
     def _log_error(self, message):
-        # 에러 로깅 헬퍼 메서드
         print(f"[ProfilePage Error] {message}")

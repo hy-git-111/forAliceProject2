@@ -5,106 +5,109 @@ import logging
 
 class HomePage(BasePage):
     """
-    Page Object for the Home/Feed page of the Conduit application.
-    Handles interactions with feed tabs, tags, and article listings.
+    🔍 홈(피드) 페이지 Page Object 클래스
+    - 피드 탭 클릭, 태그 클릭, 기사 제목/태그 확인 기능을 포함합니다.
     """
-    
+
     def __init__(self, driver):
-        """Initialize the HomePage with WebDriver instance"""
+        """🧱 WebDriver 초기화"""
         super().__init__(driver)
         self.logger = logging.getLogger(__name__)
-    
+
     def clickYourFeedTab(self):
-        """Click on the 'Your Feed' tab to view personalized articles"""
+        """📰 'Your Feed' 탭 클릭"""
         try:
-            self._click(Loc.YOUR_FEED_TAB)
+            # self._click(Loc.TAB_YOUR_FEED)  # ⛔ 이전 방식 (사용 중지)
+            self._click(Loc.HOME_YOUR_FEED_LINK)  # ✅ 일관된 네이밍으로 변경
             self.logger.info("Clicked on Your Feed tab")
         except TimeoutException:
-            self.logger.error("Your Feed tab not found or not clickable")
+            self.logger.error("Your Feed 탭 클릭 실패")
             raise
-    
+
     def clickGlobalFeedTab(self):
-        """Click on the 'Global Feed' tab to view all articles"""
+        """📰 'Global Feed' 탭 클릭"""
         try:
-            self._click(Loc.GLOBAL_FEED_TAB)
+            # self._click(Loc.TAB_GLOBAL_FEED)  # ⛔ 이전 방식 (사용 중지)
+            self._click(Loc.HOME_GLOBAL_FEED_LINK)  # ✅ 로케이터 이름 통일
             self.logger.info("Clicked on Global Feed tab")
         except TimeoutException:
-            self.logger.error("Global Feed tab not found or not clickable")
+            self.logger.error("Global Feed 탭 클릭 실패")
             raise
-    
+
     def clickTag(self, tagName):
         """
-        Click on a specific tag to filter articles
-        
+        🏷️ 인기 태그 중 지정된 태그 클릭
         Args:
-            tagName (str): The name of the tag to click
+            tagName (str): 클릭할 태그 텍스트
         """
         try:
-            # Assuming Loc.TAG_ITEM is a method that returns a locator for a specific tag
-            tag_locator = (Loc.TAG_ITEM[0], Loc.TAG_ITEM[1].format(tagName))
+            # ⛔ CSS Selector에서 contains 사용 불가 → 실패 가능성 있음
+            # tag_locator = (Loc.HOME_POPULAR_TAG[0], Loc.HOME_POPULAR_TAG[1].replace("a.tag-default", f"a.tag-default:contains('{tagName}')"))
+
+            # ✅ XPath 사용: 텍스트 일치 태그 선택
+            tag_locator = (Loc.HOME_POPULAR_TAG_BY_TEXT[0], Loc.HOME_POPULAR_TAG_BY_TEXT[1].format(tagName))
             self._click(tag_locator)
-            self.logger.info(f"Clicked on tag: {tagName}")
+            self.logger.info(f"'{tagName}' 태그 클릭 완료")
         except TimeoutException:
-            self.logger.error(f"Tag '{tagName}' not found or not clickable")
+            self.logger.error(f"'{tagName}' 태그 클릭 실패")
             raise
-    
+
     def getArticleTitles(self):
         """
-        Get a list of all article titles currently displayed
-        
+        📄 현재 페이지에 표시된 모든 게시글 제목 가져오기
         Returns:
-            list: List of article title strings
+            list[str]: 게시글 제목 리스트
         """
         try:
-            elements = self._find_elements(Loc.ARTICLE_TITLES)
+            elements = self._find_elements(Loc.HOME_ARTICLE_TITLE)
             titles = [element.text for element in elements]
-            self.logger.info(f"Found {len(titles)} article titles")
+            self.logger.info(f"{len(titles)}개의 게시글 제목을 확인했습니다.")
             return titles
         except TimeoutException:
-            self.logger.error("Article titles not found")
+            self.logger.error("게시글 제목 탐색 실패")
             return []
-    
+
     def isArticleVisible(self, title):
         """
-        Check if an article with the specified title is visible
-        
+        👀 특정 제목의 게시글이 보이는지 확인
         Args:
-            title (str): The title of the article to check
-            
+            title (str): 찾고자 하는 게시글 제목
         Returns:
-            bool: True if article is visible, False otherwise
+            bool: 화면에 존재 여부
         """
         try:
-            article_locator = (Loc.ARTICLE_BY_TITLE[0], Loc.ARTICLE_BY_TITLE[1].format(title))
-            return self._is_element_visible(article_locator)
+            # ⛔ contains()는 CSS에선 불가 → XPath 또는 정확 매칭 필요
+            # article_locator = (Loc.HOME_ARTICLE_TITLE[0], Loc.HOME_ARTICLE_TITLE[1].replace("h1", f"h1:contains('{title}')"))
+
+            # ✅ 정적인 방식 사용 (단일 제목이 유일하게 존재한다고 가정)
+            elements = self._find_elements(Loc.HOME_ARTICLE_TITLE)
+            return any(title in e.text for e in elements)
         except TimeoutException:
             return False
-    
+
     def getTagList(self):
         """
-        Get a list of all available tags
-        
+        🏷️ 현재 사이드바에서 보이는 인기 태그 목록 가져오기
         Returns:
-            list: List of tag name strings
+            list[str]: 태그 이름 리스트
         """
         try:
-            elements = self._find_elements(Loc.TAG_LIST)
+            elements = self._find_elements(Loc.HOME_POPULAR_TAGS_LIST)
             tags = [element.text for element in elements]
-            self.logger.info(f"Found {len(tags)} tags")
+            self.logger.info(f"{len(tags)}개의 인기 태그를 확인했습니다.")
             return tags
         except TimeoutException:
-            self.logger.error("Tags not found")
+            self.logger.error("인기 태그 목록 탐색 실패")
             return []
-    
+
     def isPageLoaded(self):
         """
-        Verify that the home page is fully loaded
-        
+        ✅ 페이지 주요 구성 요소가 보이는지 확인
         Returns:
-            bool: True if page is loaded, False otherwise
+            bool: 페이지가 완전히 로드되었는지 여부
         """
         try:
-            return (self._is_element_visible(Loc.FEED_TOGGLE) and 
-                    self._is_element_visible(Loc.ARTICLE_PREVIEW_LIST))
+            return (self._is_element_visible(Loc.HOME_FEED_TOGGLE) and 
+                    self._is_element_visible(Loc.HOME_ARTICLE_PREVIEW))
         except TimeoutException:
             return False
