@@ -18,7 +18,7 @@ class LoginPage(BasePage):
     def enterEmail(self, email):
         # 이메일 입력 필드에 이메일 입력
         try:
-            self._send_keys(Loc.EMAIL_INPUT, email)
+            self._send_keys(Loc.LOGIN_EMAIL_INPUT, email)
             return self
         except Exception as e:
             self.logger.error(f"이메일 입력 중 오류 발생: {str(e)}")
@@ -27,7 +27,7 @@ class LoginPage(BasePage):
     def enterPassword(self, password):
         # 비밀번호 입력 필드에 비밀번호 입력
         try:
-            self._send_keys(Loc.PASSWORD_INPUT, password)
+            self._send_keys(Loc.LOGIN_PASSWORD_INPUT, password)
             return self
         except Exception as e:
             self.logger.error(f"비밀번호 입력 중 오류 발생: {str(e)}")
@@ -36,7 +36,7 @@ class LoginPage(BasePage):
     def clickSignIn(self):
         # 로그인 버튼 클릭
         try:
-            self._click(Loc.SIGN_IN_BUTTON)
+            self._click(Loc.LOGIN_SIGN_IN_BUTTON)
             return self
         except Exception as e:
             self.logger.error(f"로그인 버튼 클릭 중 오류 발생: {str(e)}")
@@ -56,11 +56,10 @@ class LoginPage(BasePage):
     def getErrorMessages(self):
         # 로그인 실패 시 오류 메시지 리스트 반환
         try:
-            # 오류 메시지가 표시될 때까지 잠시 대기
             WebDriverWait(self.driver, 10).until(
-                EC.visibility_of_element_located(Loc.ERROR_MESSAGES)
+                EC.visibility_of_element_located(Loc.LOGIN_ERROR_MESSAGES)
             )
-            elements = self._find_elements(Loc.ERROR_MESSAGES)
+            elements = self._find_elements(Loc.LOGIN_ERROR_MESSAGES)
             return [e.text for e in elements]
         except Exception as e:
             self.logger.warning(f"오류 메시지 가져오기 실패: {str(e)}")
@@ -69,6 +68,6 @@ class LoginPage(BasePage):
     def isLoggedIn(self):
         # 로그인 성공 여부 확인 (헤더에 사용자 아이콘이 표시되는지 확인)
         try:
-            return self._is_element_visible(Loc.USER_PROFILE_ICON, timeout=5)
+            return self._is_element_visible(Loc.LOGIN_USER_PROFILE_ICON, timeout=5)
         except:
             return False
