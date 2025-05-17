@@ -1,506 +1,455 @@
-
-    @pytest.mark.data_required
-    def test_favorite_article(self, driver):
-        """
-        로그인 상태에서 게시글 좋아요 기능 테스트
-        
-        사전 조건:
-        1. 메인 페이지 진입
-        2. 로그인 상태(ID :test1@test.com / PW :test1234)
-        """
-        try:
-            # 테스트 데이터 로드
-            test_data = load_test_data()["login"]
-            
-            # 1. 홈페이지 접근 및 로그인
-            home_page = HomePage(driver)
-            home_page.navigate_to_home()
-            home_page.login(test_data["email"], test_data["password"])
-            
-            # 2. Global Feed 탭 클릭
-            home_page.click_global_feed_tab()
-            
-            # 3. 첫 번째 게시글 클릭
-            home_page.click_first_article()
-            
-            # 4. 게시글 상세 페이지 객체 생성
-            article_page = ArticlePage(driver)
-            
-            # 5. 좋아요 버튼 클릭 전 카운터 값 저장
-            before_count = article_page.get_favorite_count()
-            
-            # 6. 좋아요 버튼 클릭
-            article_page.click_favorite_button()
-            
-            # 7. 좋아요 버튼 스타일 변경 확인 (초록 배경, 흰색 하트)
-            assert article_page.is_favorite_button_active() == True
-            
-            # 8. 좋아요 수 증가 확인
-            after_count = article_page.get_favorite_count()
-            assert after_count == before_count + 1
-            
-        except Exception as e:
-            pytest.fail(f"테스트 실패: {e}")
-
-    @pytest.mark.data_required
-    def test_favorited_articles_tab(self, driver):
-        """
-        좋아요한 게시글이 Favorited Articles 탭에 표시되는지 테스트
-        
-        사전 조건:
-        1. 메인 페이지 진입
-        2. 로그인 상태(ID :test1@test.com / PW :test1234)
-        """
-        try:
-            # 테스트 데이터 로드
-            test_data = load_test_data()["login"]
-            
-            # 1. 홈페이지 접근 및 로그인
-            home_page = HomePage(driver)
-            home_page.navigate_to_home()
-            home_page.login(test_data["email"], test_data["password"])
-            
-            # 2. Global Feed 탭 클릭
-            home_page.click_global_feed_tab()
-            
-            # 3. 첫 번째 게시글 클릭
-            article_title = home_page.get_first_article_title()
-            home_page.click_first_article()
-            
-            # 4. 게시글 상세 페이지 객체 생성
-            article_page = ArticlePage(driver)
-            
-            # 5. 좋아요 버튼 클릭
-            article_page.click_favorite_button()
-            
-            # 6. 사용자 아이콘 클릭
-            article_page.click_user_icon()
-            
-            # 7. My Profile 링크 클릭
-            article_page.click_my_profile()
-            
-            # 8. 프로필 페이지 객체 생성
-            profile_page = ProfilePage(driver)
-            
-            # 9. Favorited Articles 탭 클릭
-            profile_page.click_favorited_articles_tab()
-            
-            # 10. 즐겨찾기한 게시글이 목록에 표시되는지 확인
-            assert profile_page.is_article_in_list(article_title) == True
-            
-            # 11. 좋아요 버튼이 활성화 상태인지 확인
-            assert profile_page.is_favorite_button_active() == True
-            
-            # 12. 좋아요 수가 1 이상인지 확인
-            assert profile_page.get_favorite_count() >= 1
-            
-        except Exception as e:
-            pytest.fail(f"테스트 실패: {e}")
-
-    @pytest.mark.data_required
-    def test_unfavorite_article(self, driver):
-        """
-        좋아요 취소 후 Favorited Articles 탭에서 사라지는지 테스트
-        
-        사전 조건:
-        1. 메인 페이지 진입
-        2. 로그인 상태(ID :test1@test.com / PW :test1234)
-        3. [Favorited Articles 탭]에 게시글 ≥ 1 존재
-        """
-        try:
-            # 테스트 데이터 로드
-            test_data = load_test_data()["login"]
-            
-            # 1. 홈페이지 접근 및 로그인
-            home_page = HomePage(driver)
-            home_page.navigate_to_home()
-            home_page.login(test_data["email"], test_data["password"])
-            
-            # 2. 사용자 아이콘 클릭
-            home_page.click_user_icon()
-            
-            # 3. My Profile 링크 클릭
-            home_page.click_my_profile()
-            
-            # 4. 프로필 페이지 객체 생성
-            profile_page = ProfilePage(driver)
-            
-            # 5. Favorited Articles 탭 클릭
-            profile_page.click_favorited_articles_tab()
-            
-            # 6. 게시글이 없으면 Global Feed에서 게시글 좋아요 추가
-            if not profile_page.has_articles():
-                home_page.navigate_to_home()
-                home_page.click_global_feed_tab()
-                home_page.click_first_article()
-                article_page = ArticlePage(driver)
-                article_page.click_favorite_button()
-                article_page.click_user_icon()
-                article_page.click_my_profile()
-                profile_page.click_favorited_articles_tab()
-            
-            # 7. 첫 번째 좋아요 버튼 클릭 (좋아요 취소)
-            profile_page.click_first_favorite_button()
-            
-            # 8. 좋아요 버튼 스타일 변경 확인 (흰색 배경, 초록 하트)
-            assert profile_page.is_favorite_button_inactive() == True
-            
-            # 9. 브라우저 새로고침
-            driver.refresh()
-            
-            # 10. 해당 게시글이 목록에서 사라졌는지 확인
-            assert profile_page.has_no_articles() == True
-            
-        except Exception as e:
-            pytest.fail(f"테스트 실패: {e}")
-
-    @pytest.mark.data_required
-    def test_follow_author(self, driver):
-        """
-        작성자 팔로우 기능 테스트
-        
-        사전 조건:
-        1. 메인 페이지 진입
-        2. 로그인 상태(ID :test1@test.com / PW :test1234)
-        """
-        try:
-            # 테스트 데이터 로드
-            test_data = load_test_data()["login"]
-            
-            # 1. 홈페이지 접근 및 로그인
-            home_page = HomePage(driver)
-            home_page.navigate_to_home()
-            home_page.login(test_data["email"], test_data["password"])
-            
-            # 2. Global Feed 탭 클릭
-            home_page.click_global_feed_tab()
-            
-            # 3. 작성자 이름 가져오기
-            author_name = home_page.get_first_article_author()
-            
-            # 4. 작성자 이름 클릭
-            home_page.click_first_article_author()
-            
-            # 5. 프로필 페이지 객체 생성
-            profile_page = ProfilePage(driver)
-            
-            # 6. 이미 팔로우 중이면 언팔로우 먼저 수행
-            if profile_page.is_following_author():
-                profile_page.click_follow_button()
-                time.sleep(1)  # 상태 변경 대기
-            
-            # 7. Follow 버튼 클릭
-            profile_page.click_follow_button()
-            
-            # 8. 버튼 텍스트가 "Unfollow 작성자명"으로 변경되었는지 확인
-            button_text = profile_page.get_follow_button_text()
-            assert f"Unfollow {author_name}" in button_text
-            
-            # 9. 버튼 스타일이 초록 배경으로 변경되었는지 확인
-            assert profile_page.is_following_author() == True
-            
-        except Exception as e:
-            pytest.fail(f"테스트 실패: {e}")
-```
-
-이 테스트 코드는 JSON 형식의 테스트 케이스에 맞춰 5개의 테스트 함수를 구현했습니다. 각 테스트는 POM 구조를 따르며, 페이지 객체와 로케이터를 import하여 사용합니다. 테스트 데이터는 `load_test_data()` 함수를 통해 JSON 파일에서 로드합니다.
-
-각 테스트 함수는:
-1. 명확한 docstring을 포함
-2. 사전 조건에 따라 적절한 pytest.mark 데코레이터 적용
-3. try-except 구문으로 오류 처리
-4. 테스트 케이스의 재현 절차와 기대 결과를 정확히 구현
-
-이 코드는 기존 POM 구조와 설정을 활용하여 그대로 실행 가능하도록 작성되었습니다.
-
-# ===== 다음 배치 =====
-
-아래는 요청하신 테스트 케이스에 맞춰 작성한 Pytest 테스트 코드입니다. POM 구조를 따르고, JSON 형식의 테스트 케이스와 일치하는 5개의 테스트를 포함합니다.
-
-```python
-import pytest
-import json
 import os
+import json
+import pytest
+import inspect
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 
-from pages.home_page import HomePage
-from pages.profile_page import ProfilePage
+# 페이지 객체 임포트
+from pages.settings_page import SettingsPage
 from pages.article_page import ArticlePage
+from pages.profile_page import ProfilePage
+from pages.editor_page import EditorPage
+from pages.signup_page import SignupPage
 from pages.login_page import LoginPage
+from pages.home_page import HomePage
 
-from locators.home_locators import HomePageLocators as HomeLoc
+# 로케이터 임포트
+from locators.settings_locators import SettingsPageLocators as SettingsLoc
 from locators.profile_locators import ProfilePageLocators as ProfileLoc
-from locators.article_locators import ArticlePageLocators as ArticleLoc
+from locators.signup_locators import SignupPageLocators as SignupLoc
+from locators.editor_locators import EditorPageLocators as EditorLoc
 from locators.login_locators import LoginPageLocators as LoginLoc
+from locators.home_locators import HomePageLocators as HomeLoc
+from locators.article_locators import ArticlePageLocators as ArticleLoc
 
-from config import TEST_DATA_DIR
+# 유틸리티 임포트
+from utils.logger import setup_logger
+from config import config
 
+def loadTestData():
+    # 테스트 데이터 로드 함수
+    dataFilePath = os.path.join(config.TEST_DATA_DIR, "test_data.json")
+    with open(dataFilePath, 'r', encoding='utf-8') as file:
+        return json.load(file)
 
-def load_test_data():
-    """테스트 데이터 파일을 로드하는 헬퍼 함수"""
-    data_file = os.path.join(TEST_DATA_DIR, "test_data.json")
-    with open(data_file, 'r', encoding='utf-8') as f:
-        return json.load(f)
+logger = setup_logger(__name__)
 
+class TestSocial:
+    # 마이페이지 시나리오 테스트 클래스
 
-class TestFollowFeatures:
-    """팔로우 기능 관련 테스트 클래스"""
-
-    @pytest.mark.data_required
-    def test_follow_author_and_check_your_feed(self, driver):
-        """
-        팔로우한 작성자의 게시글이 Your Feed에 표시되는지 확인하는 테스트
-        
-        사전 조건:
-        1. 메인 페이지 진입
-        2. 로그인 상태(ID :test1@test.com / PW :test1234)
-        
-        재현 절차:
-        1. [Global Feed 탭] 클릭
-        2. [작성자 이름] 클릭 > 프로필 이동
-        3. [Follow 버튼] 클릭
-        4. [로고] 클릭 > 메인 페이지
-        5. [Your Feed 탭] 클릭
-        
-        기대 결과:
-        1. [Your Feed 탭]에 nav-link active 클래스 적용(활성화)
-        2. 피드에 팔로우한 작성자의 게시글 카드가 1 건 이상 표시
-        """
+    @pytest.mark.data_required_below_ten_articles_below_ten_articles
+    def testFavoriteArticle(self, driver):
+        # SOC-AUTO-001: 로그인 상태에서 게시글 좋아요(Favorite) 기능 테스트
         try:
             # 테스트 데이터 로드
-            test_data = load_test_data()["login"]
+            testData = loadTestData()["belowTenArticlesUser"]
             
-            # 1. 홈페이지 접속 및 로그인
-            home_page = HomePage(driver)
-            home_page.login(test_data["email"], test_data["password"])
+            # 로그인
+            loginPage = LoginPage(driver)
+            loginPage.navigate()
+            loginPage.login(testData["email"], testData["password"])
             
-            # 2. Global Feed 탭 클릭
-            home_page.click_global_feed_tab()
+            # Global Feed 탭 클릭
+            homePage = HomePage(driver)
+            homePage.clickGlobalFeedTab()
             
-            # 3. 첫 번째 게시글의 작성자 이름 저장 후 클릭
-            author_name = home_page.get_first_article_author()
-            home_page.click_first_article_author()
+            # 첫 번째 게시글 클릭
+            driver.find_element(*HomeLoc.ARTICLE_PREVIEW).click()
             
-            # 4. 프로필 페이지에서 Follow 버튼 클릭
+            # Favorite 버튼 클릭 전 좋아요 수 확인
+            favoriteButton = driver.find_element(*HomeLoc.HOME_ARTICLE_LIKE_COUNT)
+            counterBefore = int(favoriteButton.text.strip())
+            
+            # Favorite 버튼 클릭
+            favoriteButton.click()
+            time.sleep(1)  # 버튼 상태 변경 대기
+            
+            # 1. Favorite 버튼 클래스 변경 확인
+            favoriteButton = driver.find_element(*HomeLoc.HOME_ARTICLE_LIKE_COUNT)
+            assert "btn-primary" in favoriteButton.get_attribute("class"), "Favorite 버튼이 초록색 배경으로 변경되지 않았습니다."
+            
+            # 2. 좋아요 수 증가 확인
+            counterAfter = int(favoriteButton.text.strip())
+            assert counterAfter == counterBefore + 1, f"좋아요 수가 증가하지 않았습니다. 이전: {counterBefore}, 이후: {counterAfter}"
+            
+            logger.info(f"✅ {inspect.currentframe().f_code.co_name} 테스트 성공")
+        except Exception as e:
+            logger.error(f"❌ {inspect.currentframe().f_code.co_name} 테스트 실패: {str(e)}")
+            pytest.fail(str(e))
+    
+    @pytest.mark.data_required_below_ten_articles
+    def testFavoritedArticleAppearsInProfile(self, driver):
+        # SOC-AUTO-002: 좋아요한 게시글이 프로필의 Favorited Articles 탭에 표시되는지 테스트
+        try:
+            # 테스트 데이터 로드
+            testData = loadTestData()["belowTenArticlesUser2"]
+            
+            # 로그인
+            loginPage = LoginPage(driver)
+            loginPage.navigate()
+            loginPage.login(testData["email"], testData["password"])
+            
+            # 홈페이지 접속 확인
+            homePage = HomePage(driver)
+            assert homePage.isPageLoaded(), "홈페이지가 로드되지 않았습니다."
+            
+            # Global Feed 탭 클릭
+            homePage.clickGlobalFeedTab()
+            
+            # 첫 번째 게시글의 제목 저장
+            articleTitle = driver.find_element(*HomeLoc.HOME_ARTICLE_TITLE).text
+            
+            # 첫 번째 게시글의 Favorite 버튼 클릭
+            favoriteButton = driver.find_element(*HomeLoc.HOME_ARTICLE_LIKE_HART)
+            favoriteButton.click()
+            time.sleep(1)  # 버튼 상태 변경 대기
+
+            # 프로필 아이콘 클릭
+            driver.find_element(*HomeLoc.HOME_NAV_USER_PIC).click()
+            
+            # Favorited Articles 탭 클릭
+            profilePage = ProfilePage(driver)
+            profilePage.clickFavoritedArticleTab()
+            
+            # 1. 즐겨찾기한 게시글 카드가 목록에 표시되는지 확인
+            articleTitles = driver.find_elements(*ProfileLoc.PROFILE_ARTICLE_PREVIEW)
+            foundArticle = False
+            
+            for titleElement in articleTitles:
+                if titleElement.text == articleTitle:
+                    foundArticle = True
+                    break
+            
+            assert foundArticle, f"즐겨찾기한 게시글 '{articleTitle}'이 Favorited Articles 탭에 표시되지 않습니다."
+            
+            # 2. 카드의 Favorite 버튼이 btn-primary 상태인지 확인
+            favoriteButtons = driver.find_elements(*ProfileLoc.PROFILE_FAVORITE_BTN)
+            assert len(favoriteButtons) > 0, "Favorite 버튼을 찾을 수 없습니다."
+            assert "btn-primary" in favoriteButtons[0].get_attribute("class"), "Favorite 버튼이 초록색 배경 상태가 아닙니다."
+            
+            # 3. 카드 내 좋아요 수가 정수 ≥ 1 표시되는지 확인
+            favoriteCounters = driver.find_elements(*ProfileLoc.PROFILE_FAVORITE_COUNT)
+            assert len(favoriteCounters) > 0, "좋아요 수 카운터를 찾을 수 없습니다."
+            counter_value = int(favoriteCounters[0].text)
+            assert counter_value >= 1, f"좋아요 수가 1 이상이어야 하는데 {counter_value}입니다."
+            
+            logger.info(f"✅ {inspect.currentframe().f_code.co_name} 테스트 성공")
+        except Exception as e:
+            logger.error(f"❌ {inspect.currentframe().f_code.co_name} 테스트 실패: {str(e)}")
+            pytest.fail(str(e))
+    
+    @pytest.mark.data_required_below_ten_articles
+    def testUnfavoriteArticleDisappearsFromProfile(self, driver):
+        # SOC-AUTO-003: 좋아요 취소한 게시글이 프로필의 Favorited Articles 탭에서 사라지는지 테스트
+        try:
+            # 테스트 데이터 로드
+            testData = loadTestData()["belowTenArticlesUser"]
+            
+            # 로그인
+            loginPage = LoginPage(driver)
+            loginPage.navigate()
+            loginPage.login(testData["email"], testData["password"])
+            
+            # 홈페이지 접속 확인
+            homePage = HomePage(driver)
+            assert homePage.isPageLoaded(), "홈페이지가 로드되지 않았습니다."
+            
+            # 프로필 아이콘 클릭
+            driver.find_element(*HomeLoc.HOME_NAV_USER_PIC).click()
+            
+            # Favorited Articles 탭 클릭
+            driver.find_element(*ProfileLoc.PROFILE_FAVORITED_ARTICLES_TAB).click()
+            time.sleep(1)  # 탭 전환 대기
+            
+            # 첫 번째 게시글의 제목 저장
+            articleTitle = driver.find_element(*ProfileLoc.PROFILE_ARTICLE_PREVIEW).text
+            
+            # 첫 번째 Favorite 버튼 클릭 (좋아요 취소)
+            favoriteButton = driver.find_element(*ProfileLoc.PROFILE_FAVORITE_BTN)
+            assert "btn-primary" in favoriteButton.get_attribute("class"), "Favorite 버튼이 이미 초록색 배경 상태가 아닙니다."
+            
+            favoriteButton.click()
+            time.sleep(1)  # 버튼 상태 변경 대기
+            
+            # 1. Favorite 버튼 클래스 변경 확인
+            favoriteButton = driver.find_element(*HomeLoc.HOME_ARTICLE_LIKE_COUNT)
+            assert "btn-outline-primary" in favoriteButton.get_attribute("class"), "Favorite 버튼이 흰색 배경으로 변경되지 않았습니다."
+            
+            # 브라우저 새로고침
+            driver.refresh()
+            time.sleep(2)  # 페이지 로드 대기
+            
+            # 2. 해당 카드가 목록에서 사라졌는지 확인
+            articleTitles = driver.find_elements(*HomeLoc.HOME_ARTICLE_LIKE_COUNT)
+            for titleElement in articleTitles:
+                assert titleElement.text != articleTitle, f"좋아요 취소한 게시글 '{articleTitle}'이 여전히 Favorited Articles 탭에 표시됩니다."
+            
+            logger.info(f"✅ {inspect.currentframe().f_code.co_name} 테스트 성공")
+        except Exception as e:
+            logger.error(f"❌ {inspect.currentframe().f_code.co_name} 테스트 실패: {str(e)}")
+            pytest.fail(str(e))
+    
+    @pytest.mark.data_required_below_ten_articles
+    def testFollowAuthor(self, driver):
+        # SOC-AUTO-004: 작성자 팔로우 기능 테스트
+        try:
+            # 테스트 데이터 로드
+            testData = loadTestData()["belowTenArticlesUser"]
+            
+            # 로그인
+            loginPage = LoginPage(driver)
+            loginPage.navigate()
+            loginPage.login(testData["email"], testData["password"])
+            
+            # 홈페이지 접속 확인
+            homePage = HomePage(driver)
+            assert homePage.isPageLoaded(), "홈페이지가 로드되지 않았습니다."
+            
+            # Global Feed 탭 클릭
+            homePage.clickGlobalFeedTab()
+
+            # 게시글 클릭
+            authorName = driver.find_element(*HomeLoc.HOME_ARTICLE_AUTHOR_LINK).text
+            driver.find_element(*HomeLoc.HOME_ARTICLE_AUTHOR_LINK).click()
+            
+            # 다른 사용자 프로필 클릭
+            driver.find_element(ArticleLoc.ARTICLE_ANOTHER_WRITER).click()
+
+            # 이미 팔로우 중인 경우 언팔로우 먼저 수행
             profile_page = ProfilePage(driver)
-            profile_page.click_follow_button()
+            followButton = driver.find_element(*ProfileLoc.PROFILE_UNFOLLOW_BTN)
+            if "Unfollow" in followButton.text:
+                profile_page.clickUnfollowButton()
+                time.sleep(1)  # 버튼 상태 변경 대기
+                followButton = driver.find_element(*ProfileLoc.PROFILE_FOLLOW_BTN)
+            
+            # Follow 버튼 클릭
+            profile_page.clickFollowButton()
+            time.sleep(1)  # 버튼 상태 변경 대기
+            
+            # 1. 버튼 텍스트 변경 확인
+            followButton = driver.find_element(*ProfileLoc.PROFILE_UNFOLLOW_BTN)
+            assert f"Unfollow {authorName}" in followButton.text, f"버튼 텍스트가 'Unfollow {authorName}'으로 변경되지 않았습니다."
+            
+            # 2. 버튼 클래스 변경 확인
+            assert "btn-secondary" in followButton.get_attribute("class"), "Follow 버튼의 클래스가 변경되지 않았습니다."
+            
+            logger.info(f"✅ {inspect.currentframe().f_code.co_name} 테스트 성공")
+        except Exception as e:
+            logger.error(f"❌ {inspect.currentframe().f_code.co_name} 테스트 실패: {str(e)}")
+            pytest.fail(str(e))
+
+    @pytest.mark.data_required_below_ten_articles
+    def testFollowAuthorAndCheckFeed(self, driver):
+        # SOC-AUTO-005: 팔로우한 작성자의 게시글이 Your Feed에 표시되는지 확인하는 테스트
+        try:
+            # 테스트 데이터 로드
+            testData = loadTestData()["belowTenArticlesUser2"]
+            
+            # 홈페이지 접속 및 로그인 상태 확인
+            homePage = HomePage(driver)
+            if not homePage.isLoggedIn():
+                loginPage = LoginPage(driver)
+                loginPage.navigate()
+                loginPage.login(testData["email"], testData["password"])
+            
+            # Global Feed 탭 클릭
+            homePage.clickGlobalFeedTab()
+        
+            # 첫 번째 게시글 진입
+            driver.find_element(*HomeLoc.ARTICLE_PREVIEW).click()
+
+            # 작성자 이름 클릭하여 프로필 페이지로 이동
+            driver.find_element(*ArticleLoc.ARTICLE_ANOTHER_WRITER).click()
+            
+            # 프로필 페이지에서 Follow 버튼 클릭
+            profile_page = ProfilePage(driver)
+            authorName = profile_page.getUsername()
+            profile_page.clickFollowButton()
+            
+            # 로고 클릭하여 메인 페이지로 이동
+            driver.find_element(*ProfileLoc.PROFILE_NAVBAR_BRAND).click()
+            
+            # Your Feed 탭 클릭
+            homePage.clickYourFeedTab()
+            
+            # 1. Your Feed 탭이 활성화되었는지 확인
+            yourFeedTab = driver.find_element(*HomeLoc.HOME_YOUR_FEED_LINK)
+            assert "active" in yourFeedTab.get_attribute("class"), "Your Feed 탭이 활성화되지 않았습니다."
+            
+            # 2. 팔로우한 작성자의 게시글이 표시되는지 확인
+            articleTitles = homePage.getArticleTitles()
+            assert len(articleTitles) > 0, "Your Feed에 게시글이 표시되지 않습니다."
+            
+            # 작성자 이름으로 게시글 확인
+            authorElements = driver.find_elements(*ArticleLoc.ARTICLE_ANOTHER_WRITER)
+            found_author = False
+            for element in authorElements:
+                if element.text == authorName:
+                    found_author = True
+                    break
+            
+            assert found_author, f"팔로우한 작성자({authorName})의 게시글이 Your Feed에 표시되지 않습니다."
+            
+            logger.info(f"✅ {inspect.currentframe().f_code.co_name} 테스트 성공")
+        except Exception as e:
+            logger.error(f"❌ {inspect.currentframe().f_code.co_name} 테스트 실패: {str(e)}")
+            raise
+
+    @pytest.mark.data_required_below_ten_articles
+    def testFollowUnfollowButtonState(self, driver):
+        # SOC-AUTO-006: 팔로우/언팔로우 버튼 상태 변경 테스트
+        try:
+            # 테스트 데이터 로드
+            testData = loadTestData()["belowTenArticlesUser"]
+            
+            # 홈페이지 접속 및 로그인 상태 확인
+            homePage = HomePage(driver)
+            loginPage = LoginPage(driver)
+            if not loginPage.isLoggedIn():
+                loginPage.navigate()
+                loginPage.login(testData["email"], testData["password"])
+            
+            # Global Feed 탭 클릭
+            homePage.clickGlobalFeedTab()
+
+            # 첫 번째 게시글 진입
+            driver.find_element(*HomeLoc.ARTICLE_PREVIEW).click()
+            
+            # 작성자 이름 클릭하여 프로필 페이지로 이동
+            driver.find_element(*ArticleLoc.ARTICLE_ANOTHER_WRITER).click()
+            
+            # 이미 언팔로우 중인 경우 팔로우 먼저 수행
+            profile_page = ProfilePage(driver)
+            authorName = profile_page.getUsername()
+            if profile_page.isUnFollowing():
+                profile_page.clickFollowButton()
+
+            # Unfollow 버튼 클릭
+            profile_page.clickUnfollowButton()
+            
+            # 결과 검증
+            # 1. 버튼 텍스트가 "Follow 작성자명"으로 변경되었는지 확인
+            followButton = driver.find_element(*ProfileLoc.PROFILE_UNFOLLOW_BTN)
+            expected_text = f"Follow {authorName}"
+            assert expected_text in followButton.text, f"버튼 텍스트가 '{expected_text}'로 변경되지 않았습니다."
+            
+            # 2. 버튼 클래스가 btn-outline-secondary인지 확인
+            button_class = followButton.get_attribute("class")
+            assert "btn-outline-secondary" in button_class, "버튼 클래스가 btn-outline-secondary로 변경되지 않았습니다."
+            
+            logger.info(f"✅ {inspect.currentframe().f_code.co_name} 테스트 성공")
+        except Exception as e:
+            logger.error(f"❌ {inspect.currentframe().f_code.co_name} 테스트 실패: {str(e)}")
+            raise
+
+    @pytest.mark.data_required_below_ten_articles
+    def testUnfollowAuthorFeedDisappears(self, driver):
+        # SOC-AUTO-007: 언팔로우한 작성자의 게시글이 Your Feed에서 사라지는지 확인하는 테스트
+        try:
+            # 테스트 데이터 로드
+            testData = loadTestData()["belowTenArticlesUser2"]
+            
+            # 1. 홈페이지 접속 및 로그인 상태 확인
+            homePage = HomePage(driver)
+            if not homePage.isLoggedIn():
+                loginPage = LoginPage(driver)
+                loginPage.navigate()
+                loginPage.login(testData["email"], testData["password"])
+            
+            # Global Feed 탭 클릭
+            homePage.clickGlobalFeedTab()
+            
+            # 첫 번째 게시글 진입
+            driver.find_element(*HomeLoc.ARTICLE_PREVIEW).click()
+            
+            # 작성자 이름 클릭하여 프로필 페이지로 이동
+            driver.find_element(*ArticleLoc.ARTICLE_ANOTHER_WRITER).click()
+            
+            # 이미 팔로우 중인 경우 언팔로우 먼저 수행
+            profile_page = ProfilePage(driver)
+            authorName = profile_page.getUsername()
+            if profile_page.isFollowing():
+                profile_page.clickUnfollowButton()
+
+            profile_page.clickFollowButton()
+            profile_page.clickUnfollowButton()
             
             # 5. 로고 클릭하여 메인 페이지로 이동
-            profile_page.click_logo()
+            driver.find_element(*ProfileLoc.PROFILE_NAVBAR_BRAND).click()
             
             # 6. Your Feed 탭 클릭
-            home_page.click_your_feed_tab()
+            homePage.clickYourFeedTab()
             
-            # 7. Your Feed 탭이 활성화되었는지 확인
-            assert home_page.is_your_feed_tab_active(), "Your Feed 탭이 활성화되지 않았습니다."
+            # 결과 검증
+            # 언팔로우한 작성자의 게시글이 표시되지 않는지 확인
+            authorElements = driver.find_elements(*HomeLoc.HOME_ARTICLE_PREVIEW)
+            for element in authorElements:
+                assert element.text != authorName, f"언팔로우한 작성자({authorName})의 게시글이 Your Feed에 여전히 표시됩니다."
             
-            # 8. 팔로우한 작성자의 게시글이 표시되는지 확인
-            assert home_page.is_author_article_displayed(author_name), f"팔로우한 작성자({author_name})의 게시글이 표시되지 않습니다."
-            
+            logger.info(f"✅ {inspect.currentframe().f_code.co_name} 테스트 성공")
         except Exception as e:
-            pytest.fail(f"테스트 실패: {e}")
-
-    @pytest.mark.data_required
-    def test_unfollow_author_button_changes(self, driver):
-        """
-        작성자 언팔로우 시 버튼 상태 변경을 확인하는 테스트
-        
-        사전 조건:
-        1. 메인 페이지 진입
-        2. 로그인 상태(ID :test1@test.com / PW :test1234)
-        
-        재현 절차:
-        1. [Global Feed 탭] 클릭
-        2. [작성자 이름] 클릭 > 프로필 이동
-        3. [Follow 버튼] 클릭
-        4. [Unfollow 버튼] 클릭
-        
-        기대 결과:
-        1. 버튼 텍스트가 "Follow 작성자명"으로 변경
-        2. 버튼 class가 btn-outline-secondary로 바뀌어 흰색 배경·회색 테두리 표시
-        """
-        try:
-            # 테스트 데이터 로드
-            test_data = load_test_data()["login"]
-            
-            # 1. 홈페이지 접속 및 로그인
-            home_page = HomePage(driver)
-            home_page.login(test_data["email"], test_data["password"])
-            
-            # 2. Global Feed 탭 클릭
-            home_page.click_global_feed_tab()
-            
-            # 3. 첫 번째 게시글의 작성자 이름 저장 후 클릭
-            author_name = home_page.get_first_article_author()
-            home_page.click_first_article_author()
-            
-            # 4. 프로필 페이지에서 Follow 버튼 클릭
-            profile_page = ProfilePage(driver)
-            profile_page.click_follow_button()
-            
-            # 5. Unfollow 버튼 클릭
-            profile_page.click_unfollow_button()
-            
-            # 6. 버튼 텍스트가 "Follow 작성자명"으로 변경되었는지 확인
-            expected_text = f"Follow {author_name}"
-            assert profile_page.get_follow_button_text() == expected_text, f"버튼 텍스트가 '{expected_text}'로 변경되지 않았습니다."
-            
-            # 7. 버튼 클래스가 btn-outline-secondary로 변경되었는지 확인
-            assert profile_page.is_follow_button_outline_style(), "버튼 스타일이 outline 스타일로 변경되지 않았습니다."
-            
-        except Exception as e:
-            pytest.fail(f"테스트 실패: {e}")
-
-    @pytest.mark.data_required
-    def test_unfollow_author_removes_from_your_feed(self, driver):
-        """
-        언팔로우한 작성자의 게시글이 Your Feed에서 제거되는지 확인하는 테스트
-        
-        사전 조건:
-        1. 메인 페이지 진입
-        2. 로그인 상태(ID :test1@test.com / PW :test1234)
-        
-        재현 절차:
-        1. [Global Feed 탭] 클릭
-        2. [작성자 이름] 클릭 > 프로필 이동
-        3. [Follow 버튼] 클릭 > [Unfollow 버튼] 클릭
-        4. [로고] 클릭 > 메인 페이지
-        5. [Your Feed 탭] 클릭
-        
-        기대 결과:
-        1. 언팔로우한 작성자의 게시글 카드가 표시되지 않음(username 텍스트 검색 0 건)
-        """
-        try:
-            # 테스트 데이터 로드
-            test_data = load_test_data()["login"]
-            
-            # 1. 홈페이지 접속 및 로그인
-            home_page = HomePage(driver)
-            home_page.login(test_data["email"], test_data["password"])
-            
-            # 2. Global Feed 탭 클릭
-            home_page.click_global_feed_tab()
-            
-            # 3. 첫 번째 게시글의 작성자 이름 저장 후 클릭
-            author_name = home_page.get_first_article_author()
-            home_page.click_first_article_author()
-            
-            # 4. 프로필 페이지에서 Follow 버튼 클릭 후 Unfollow 버튼 클릭
-            profile_page = ProfilePage(driver)
-            profile_page.click_follow_button()
-            profile_page.click_unfollow_button()
-            
-            # 5. 로고 클릭하여 메인 페이지로 이동
-            profile_page.click_logo()
-            
-            # 6. Your Feed 탭 클릭
-            home_page.click_your_feed_tab()
-            
-            # 7. 언팔로우한 작성자의 게시글이 표시되지 않는지 확인
-            assert not home_page.is_author_article_displayed(author_name), f"언팔로우한 작성자({author_name})의 게시글이 여전히 표시됩니다."
-            
-        except Exception as e:
-            pytest.fail(f"테스트 실패: {e}")
+            logger.error(f"❌ {inspect.currentframe().f_code.co_name} 테스트 실패: {str(e)}")
+            raise
 
     @pytest.mark.data_not_required
-    def test_favorite_article_redirects_to_login_when_not_logged_in(self, driver):
-        """
-        비로그인 상태에서 Favorite 버튼 클릭 시 로그인 페이지로 이동하는지 확인하는 테스트
-        
-        사전 조건:
-        1. 메인 페이지 진입
-        2. 비로그인 상태(쿠키·세션 삭제)
-        
-        재현 절차:
-        1. [Global Feed 탭] 클릭
-        2. [게시글 카드] 클릭
-        3. [Favorite 버튼] 클릭
-        
-        기대 결과:
-        1. 로그인 페이지로 이동(URL /login 확인)
-        2. 로그인 폼의 [Email 입력 필드] 표시
-        """
+    def testFavoriteArticleRedirectsTo_Login(self, driver):
+        # SOC-AUTO-008: 비로그인 상태에서 Favorite 버튼 클릭 시 로그인 페이지로 이동하는지 확인하는 테스트
         try:
-            # 1. 홈페이지 접속 (비로그인 상태)
-            home_page = HomePage(driver)
+            # 홈페이지 접속
+            homePage = HomePage(driver)
             
-            # 2. Global Feed 탭 클릭
-            home_page.click_global_feed_tab()
+            # Global Feed 탭 클릭
+            homePage.clickGlobalFeedTab()
             
-            # 3. 첫 번째 게시글 클릭
-            home_page.click_first_article()
+            # 첫 번째 게시글 Favorite 클릭
+            driver.find_element(*HomeLoc.HOME_ARTICLE_LIKE_COUNT).click()
+
+            # 2. 로그인 페이지로 이동했는지 확인
+            loginPage = LoginPage(driver)
+            assert loginPage.wait_for_url_contains("login"), "로그인 페이지로 이동하지 않았습니다."
             
-            # 4. 게시글 페이지에서 Favorite 버튼 클릭
-            article_page = ArticlePage(driver)
-            article_page.click_favorite_button()
+            # 2. 로그인 폼의 Email 입력 필드가 표시되는지 확인
+            assert loginPage.is_element_visible(LoginLoc.LOGIN_EMAIL_INPUT), "로그인 폼의 Email 입력 필드가 표시되지 않습니다."
             
-            # 5. 로그인 페이지로 이동했는지 확인
-            login_page = LoginPage(driver)
-            assert login_page.is_at_login_page(), "로그인 페이지로 이동하지 않았습니다."
-            
-            # 6. 이메일 입력 필드가 표시되는지 확인
-            assert login_page.is_email_field_displayed(), "이메일 입력 필드가 표시되지 않습니다."
-            
+            logger.info(f"✅ {inspect.currentframe().f_code.co_name} 테스트 성공")
         except Exception as e:
-            pytest.fail(f"테스트 실패: {e}")
+            logger.error(f"❌ {inspect.currentframe().f_code.co_name} 테스트 실패: {str(e)}")
+            raise
 
     @pytest.mark.data_not_required
-    def test_follow_author_redirects_to_login_when_not_logged_in(self, driver):
-        """
-        비로그인 상태에서 Follow 버튼 클릭 시 로그인 페이지로 이동하는지 확인하는 테스트
-        
-        사전 조건:
-        1. 메인 페이지 진입
-        2. 비로그인 상태
-        
-        재현 절차:
-        1. [Global Feed 탭] 클릭
-        2. [게시글 카드] 클릭
-        3. [작성자 이름] 클릭 > 프로필 이동
-        4. [Follow 버튼] 클릭
-        
-        기대 결과:
-        1. 로그인 페이지로 이동(URL /login 확인)
-        2. 로그인 폼의 [Email 입력 필드] 표시
-        """
+    def testFollowAuthorRedirectsToLogin(self, driver):
+        # SOC-AUTO-009: 비로그인 상태에서 Follow 버튼 클릭 시 로그인 페이지로 이동하는지 확인하는 테스트
         try:
-            # 1. 홈페이지 접속 (비로그인 상태)
-            home_page = HomePage(driver)
+            # 홈페이지 접속
+            homePage = HomePage(driver)
             
-            # 2. Global Feed 탭 클릭
-            home_page.click_global_feed_tab()
+            # Global Feed 탭 클릭
+            homePage.clickGlobalFeedTab()
             
-            # 3. 첫 번째 게시글 클릭
-            home_page.click_first_article()
+            # 첫 번째 게시글 카드 클릭
+            driver.find_element(*HomeLoc.ARTICLE_PREVIEW).click()
             
-            # 4. 작성자 이름 클릭하여 프로필 페이지로 이동
-            article_page = ArticlePage(driver)
-            article_page.click_author_name()
+            # 작성자 이름 클릭하여 프로필 페이지로 이동
+            driver.find_element(*ArticleLoc.ARTICLE_ANOTHER_WRITER).click()
             
-            # 5. 프로필 페이지에서 Follow 버튼 클릭
-            profile_page = ProfilePage(driver)
-            profile_page.click_follow_button()
+            # Follow 버튼 클릭
+            profilePage = ProfilePage(driver)
+            driver.find_element(*ProfileLoc.PROFILE_FOLLOW_BTN).click()
             
-            # 6. 로그인 페이지로 이동했는지 확인
-            login_page = LoginPage(driver)
-            assert login_page.is_at_login_page(), "로그인 페이지로 이동하지 않았습니다."
+            # 결과 검증
+            # 1. 로그인 페이지로 이동했는지 확인
+            loginPage = LoginPage(driver)
+            assert loginPage.wait_for_url_contains("login"), "로그인 페이지로 이동하지 않았습니다."
             
-            # 7. 이메일 입력 필드가 표시되는지 확인
-            assert login_page.is_email_field_displayed(), "이메일 입력 필드가 표시되지 않습니다."
+            # 2. 로그인 폼의 Email 입력 필드가 표시되는지 확인
+            assert loginPage.is_element_visible(LoginLoc.LOGIN_EMAIL_INPUT), "로그인 폼의 Email 입력 필드가 표시되지 않습니다."
             
+            logger.info(f"✅ {inspect.currentframe().f_code.co_name} 테스트 성공")
         except Exception as e:
-            pytest.fail(f"테스트 실패: {e}")
-```
-
-이 코드는 JSON 형식의 테스트 케이스에 맞춰 5개의 테스트 함수를 구현했습니다:
-
-1. `test_follow_author_and_check_your_feed`: 작성자를 팔로우하고 Your Feed에 게시글이 표시되는지 확인
-2. `test_unfollow_author_button_changes`: 언팔로우 시 버튼 상태 변경 확인
-3. `test_unfollow_author_removes_from_your_feed`: 언팔로우 후 Your Feed에서 게시글이 제거되는지 확인
-4. `test_favorite_article_redirects_to_login_when_not_logged_in`: 비로그인 상태에서 Favorite 버튼 클릭 시 로그인 페이지 이동 확인
-5. `test_follow_author_redirects_to_login_when_not_logged_in`: 비로그인 상태에서 Follow 버튼 클릭 시 로그인 페이지 이동 확인
-
-각 테스트는 POM 구조를 따르며, 로케이터는 import하여 사용하고 있습니다. 또한 각 테스트에는 명확한 docstring과 한글 주석이 포함되어 있습니다.
+            logger.error(f"❌ {inspect.currentframe().f_code.co_name} 테스트 실패: {str(e)}")
+            raise
