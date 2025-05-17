@@ -6,22 +6,20 @@ pipeline {
     }
   }
 
+  environment {
+    PYTHONUNBUFFERED = '1'
+  }
+
   stages {
-    stage('Git Clone') {
+    stage('Install Dependencies') {
       steps {
-        sh 'git --version'
-        sh 'rm -rf forAliceProject2' // ✅ 여기 추가됨
-        sh 'git clone https://github.com/hy-git-111/forAliceProject2.git'
-        sh 'ls forAliceProject2'
+        sh 'pip install -r qa-realworld-automation/requirements.txt'
       }
     }
 
     stage('Run Tests') {
       steps {
-        dir('forAliceProject2') {
-          sh 'pip install -r qa-realworld-automation/requirements.txt'
-          sh 'pytest qa-realworld-automation/tests --maxfail=1 --disable-warnings -v'
-        }
+        sh 'pytest qa-realworld-automation/tests --maxfail=1 --disable-warnings -v'
       }
     }
   }
