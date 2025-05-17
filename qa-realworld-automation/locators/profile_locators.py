@@ -28,6 +28,11 @@ class ProfilePageLocators:
     PROFILE_ARTICLE_AUTHOR = (By.CSS_SELECTOR, "a.author")  # 목적이 다르므로 유지
     PROFILE_ARTICLE_DATE = (By.CSS_SELECTOR, "span.date")
 
+    # ───── 팔로우 버튼 ─────
+    PROFILE_UNFOLLOW_BTN = (By.CSS_SELECTOR, "button.action-btn.btn-secondary")
+    PROFILE_FOLLOW_BTN = (By.CSS_SELECTOR, "button.action-btn.btn-outline-secondary")
+
+
     # ───── 좋아요 버튼 및 수 ─────
     PROFILE_FAVORITE_BTN = (By.CSS_SELECTOR, "button.btn.btn-sm.btn-outline-primary")
     PROFILE_FAVORITE_COUNT = (By.CSS_SELECTOR, "button.btn.btn-sm.btn-outline-primary")

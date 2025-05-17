@@ -1,3 +1,5 @@
+from selenium.webdriver.common.by import By
+
 class LoginPageLocators:
     # ───── 네비게이션 바 ─────
     LOGIN_NAVBAR_BRAND = (By.CSS_SELECTOR, "a.navbar-brand")

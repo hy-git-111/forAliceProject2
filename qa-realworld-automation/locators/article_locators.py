@@ -27,6 +27,7 @@ class ArticlePageLocators:
     ARTICLE_TITLE = (By.CSS_SELECTOR, "a.preview-link h1")
 
     # 🖋 Article Detail
+    ARTICLE_ANOTHER_WRITER = (By.CSS_SELECTOR, ".article .article-meta .info a.author")
     ARTICLE_ARTICLE_CONTENT = (By.CSS_SELECTOR, "div.article-content")
     ARTICLE_ARTICLE_PAGE = (By.CSS_SELECTOR, "div.article-page")
     ARTICLE_ARTICLE_TEXT = (By.CSS_SELECTOR, "div.article-content p")
@@ -78,6 +79,15 @@ class ArticlePageLocators:
     ARTICLE_USER_PIC = (By.CSS_SELECTOR, "img.user-pic")
     ARTICLE_YOUR_FEED_LINK = (By.CSS_SELECTOR, "a.nav-link.active")
 
+    # 🖋 Comment
     ARTICLE_COMMENT_INPUT = (By.CSS_SELECTOR, "textarea.form-control")  # ✅ 댓글 입력창 (이미 유사 항목 있음)
     ARTICLE_COMMENT_LIST = (By.CSS_SELECTOR, "div.card")                # ✅ 댓글 전체 리스트
     ARTICLE_POST_COMMENT_BUTTON = (By.CSS_SELECTOR, "button.btn.btn-sm.btn-primary")  # ✅ 댓글 등록 버튼
+    
+    ARTICLE_COMMENT_CONTAINER = (By.CSS_SELECTOR, ".col-xs-12.col-md-8.offset-md-2")
+    ARTICLE_COMMENT_CARD = (By.CSS_SELECTOR, "div.card.card-block")
+    ARTICLE_COMMENT_LAST_CARD = (By.CSS_SELECTOR, "div.card:last-child")
+    ARTICLE_COMMENT_PROFILE = (By.CSS_SELECTOR, "a.comment-author img")
+    ARTICLE_COMMENT_USERNAME = (By.CSS_SELECTOR, "a.comment-author:nth-of-type(2)")
+    ARTICLE_COMMENT_DELETE = (By.CSS_SELECTOR, "i.ion-trash-a")
+    ARTICLE_COMMENT_DATE = (By.CSS_SELECTOR, "span.date-posted")
