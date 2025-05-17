@@ -57,5 +57,16 @@ class SignupPage(BasePage):
     def getErrorMessages(self):
         elements = self._find_elements(Loc.ERROR_MESSAGES)
         return [e.text for e in elements]
+    
+    📌 참고 로케이터 예시 (signup_locators.py):
+
+        USERNAME_INPUT = (By.CSS_SELECTOR, "input[placeholder='Username']")
+        EMAIL_INPUT = (By.CSS_SELECTOR, "input[placeholder='Email']")
+        PASSWORD_INPUT = (By.CSS_SELECTOR, "input[placeholder='Password']")
+        SIGNUP_BUTTON = (By.CSS_SELECTOR, "button.btn-primary")
+        ERROR_MESSAGES = (By.CSS_SELECTOR, ".error-messages li")    
+    
+    
+    
         
         """

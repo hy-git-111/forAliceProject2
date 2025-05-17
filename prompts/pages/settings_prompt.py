@@ -76,4 +76,18 @@ class SettingsPage(BasePage):
         self.enterPassword(password)
         self.clickUpdateButton()
         
+    📌 참고 로케이터 예시 (settings_locators.py):
+
+        IMAGE_INPUT = (By.CSS_SELECTOR, "input[placeholder='URL of profile picture']")
+        USERNAME_INPUT = (By.CSS_SELECTOR, "input[placeholder='Username']")
+        BIO_INPUT = (By.CSS_SELECTOR, "textarea[placeholder='Short bio about you']")
+        EMAIL_INPUT = (By.CSS_SELECTOR, "input[type='email'][placeholder='Email']")
+        PASSWORD_INPUT = (By.CSS_SELECTOR, "input[type='password'][placeholder='New Password']")
+        UPDATE_BUTTON = (By.CSS_SELECTOR, "button.btn-primary")
+
+
+        
+        
+        
         """
+        

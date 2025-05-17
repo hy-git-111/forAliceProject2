@@ -1,0 +1,85 @@
+```python
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from pages.base_page import BasePage
+from locators.article_locators import ArticlePageLocators as Loc
+
+class ArticlePage(BasePage):
+    def __init__(self, driver):
+        super().__init__(driver)
+    
+    def getTitle(self):
+        # 게시글 제목 가져오기
+        try:
+            return self._get_text(Loc.TITLE)
+        except (TimeoutException, NoSuchElementException) as e:
+            self._log_error(f"게시글 제목을 가져오는 중 오류 발생: {str(e)}")
+            return None
+    
+    def getAuthor(self):
+        # 작성자 이름 가져오기
+        try:
+            return self._get_text(Loc.AUTHOR)
+        except (TimeoutException, NoSuchElementException) as e:
+            self._log_error(f"작성자 정보를 가져오는 중 오류 발생: {str(e)}")
+            return None
+    
+    def getBody(self):
+        # 게시글 내용 가져오기
+        try:
+            return self._get_text(Loc.BODY)
+        except (TimeoutException, NoSuchElementException) as e:
+            self._log_error(f"게시글 내용을 가져오는 중 오류 발생: {str(e)}")
+            return None
+    
+    def addComment(self, comment):
+        # 댓글 입력 및 추가
+        try:
+            self._send_keys(Loc.COMMENT_INPUT, comment)
+            self._click(Loc.POST_COMMENT_BUTTON)
+            # 댓글이 추가될 때까지 대기
+            WebDriverWait(self.driver, 10).until(
+                EC.text_to_be_present_in_element(Loc.COMMENT_LIST, comment)
+            )
+            return True
+        except (TimeoutException, NoSuchElementException) as e:
+            self._log_error(f"댓글 추가 중 오류 발생: {str(e)}")
+            return False
+    
+    def getComments(self):
+        # 댓글 목록 가져오기
+        try:
+            comment_elements = self._find_elements(Loc.COMMENT_LIST)
+            return [el.text for el in comment_elements]
+        except (TimeoutException, NoSuchElementException) as e:
+            self._log_error(f"댓글 목록을 가져오는 중 오류 발생: {str(e)}")
+            return []
+    
+    def deleteCommentByIndex(self, index):
+        # 특정 댓글(index) 삭제
+        try:
+            comment_delete_buttons = self._find_elements(Loc.DELETE_COMMENT_BUTTONS)
+            if index < len(comment_delete_buttons):
+                # 삭제 전 댓글 수 확인
+                comment_count_before = len(self._find_elements(Loc.COMMENT_LIST))
+                
+                # 댓글 삭제 버튼 클릭
+                comment_delete_buttons[index].click()
+                
+                # 댓글이 삭제될 때까지 대기
+                WebDriverWait(self.driver, 10).until(
+                    lambda driver: len(self._find_elements(Loc.COMMENT_LIST)) < comment_count_before
+                )
+                return True
+            else:
+                self._log_error(f"인덱스 {index}에 해당하는 댓글이 존재하지 않습니다.")
+                return False
+        except (TimeoutException, NoSuchElementException) as e:
+            self._log_error(f"댓글 삭제 중 오류 발생: {str(e)}")
+            return False
+    
+    def _log_error(self, message):
+        # 오류 로깅 헬퍼 메서드
+        print(f"[ERROR] ArticlePage: {message}")
+```

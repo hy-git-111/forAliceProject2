@@ -1,0 +1,110 @@
+```python
+from pages.base_page import BasePage
+from locators.home_locators import HomePageLocators as Loc
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
+import logging
+
+class HomePage(BasePage):
+    """
+    Home Page Object representing the main feed page of the application.
+    Contains methods to interact with feed tabs, tags, and article listings.
+    """
+    
+    def __init__(self, driver):
+        """Initialize the HomePage with WebDriver instance"""
+        super().__init__(driver)
+        self.logger = logging.getLogger(__name__)
+    
+    def clickYourFeedTab(self):
+        """Click on the 'Your Feed' tab to view personalized articles"""
+        try:
+            self._click(Loc.YOUR_FEED_TAB)
+            self.logger.info("Clicked on Your Feed tab")
+        except TimeoutException:
+            self.logger.error("Your Feed tab not found or not clickable")
+            raise
+    
+    def clickGlobalFeedTab(self):
+        """Click on the 'Global Feed' tab to view all articles"""
+        try:
+            self._click(Loc.GLOBAL_FEED_TAB)
+            self.logger.info("Clicked on Global Feed tab")
+        except TimeoutException:
+            self.logger.error("Global Feed tab not found or not clickable")
+            raise
+    
+    def clickTag(self, tagName):
+        """
+        Click on a specific tag to filter articles
+        
+        Args:
+            tagName (str): The name of the tag to click
+        """
+        try:
+            # Assuming Loc.TAG_ITEM is a method that returns a locator for a specific tag
+            tag_locator = Loc.TAG_ITEM(tagName)
+            self._click(tag_locator)
+            self.logger.info(f"Clicked on tag: {tagName}")
+        except TimeoutException:
+            self.logger.error(f"Tag '{tagName}' not found or not clickable")
+            raise
+    
+    def getArticleTitles(self):
+        """
+        Get a list of all article titles currently displayed
+        
+        Returns:
+            list: A list of article title strings
+        """
+        try:
+            elements = self._find_elements(Loc.ARTICLE_TITLE_LIST)
+            titles = [element.text for element in elements]
+            self.logger.info(f"Found {len(titles)} article titles")
+            return titles
+        except NoSuchElementException:
+            self.logger.error("No article titles found")
+            return []
+    
+    def isArticlePresent(self, title):
+        """
+        Check if an article with the specified title is present
+        
+        Args:
+            title (str): The title of the article to look for
+            
+        Returns:
+            bool: True if article is found, False otherwise
+        """
+        try:
+            titles = self.getArticleTitles()
+            return title in titles
+        except Exception as e:
+            self.logger.error(f"Error checking for article '{title}': {str(e)}")
+            return False
+    
+    def getTagsList(self):
+        """
+        Get a list of all available tags
+        
+        Returns:
+            list: A list of tag name strings
+        """
+        try:
+            elements = self._find_elements(Loc.TAG_LIST)
+            tags = [element.text for element in elements]
+            self.logger.info(f"Found {len(tags)} tags")
+            return tags
+        except NoSuchElementException:
+            self.logger.error("No tags found")
+            return []
+    
+    def waitForArticlesLoaded(self):
+        """Wait for articles to be loaded on the page"""
+        try:
+            self._wait_for_visibility(Loc.ARTICLES_CONTAINER)
+            self.logger.info("Articles loaded successfully")
+            return True
+        except TimeoutException:
+            self.logger.error("Articles did not load within expected time")
+            return False
+```

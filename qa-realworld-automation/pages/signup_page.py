@@ -1,0 +1,88 @@
+from selenium.webdriver.common.by import By
+from pages.base_page import BasePage
+from locators.signup_locators import SignupPageLocators as Loc
+
+class SignupPage(BasePage):
+    def __init__(self, driver):
+        super().__init__(driver)
+        # Base URL for the signup page
+        self.url = "http://localhost:4100/register"
+    
+    def navigate(self):
+        """Navigate to the signup page"""
+        self.driver.get(self.url)
+    
+    def enterUsername(self, username):
+        """Enter username in the username field
+        
+        Args:
+            username (str): Username to enter
+        """
+        self._send_keys(Loc.USERNAME_INPUT, username)
+        return self
+    
+    def enterEmail(self, email):
+        """Enter email in the email field
+        
+        Args:
+            email (str): Email to enter
+        """
+        self._send_keys(Loc.EMAIL_INPUT, email)
+        return self
+    
+    def enterPassword(self, password):
+        """Enter password in the password field
+        
+        Args:
+            password (str): Password to enter
+        """
+        self._send_keys(Loc.PASSWORD_INPUT, password)
+        return self
+    
+    def clickSignUp(self):
+        """Click on the Sign Up button"""
+        self._click(Loc.SIGNUP_BUTTON)
+        return self
+    
+    def signup(self, username, email, password):
+        """Complete the entire signup process
+        
+        Args:
+            username (str): Username to register
+            email (str): Email to register
+            password (str): Password to use
+            
+        Returns:
+            SignupPage: Returns self for method chaining
+        """
+        self.enterUsername(username)
+        self.enterEmail(email)
+        self.enterPassword(password)
+        self.clickSignUp()
+        return self
+    
+    def getErrorMessages(self):
+        """Get all error messages displayed on the page
+        
+        Returns:
+            list: List of error message strings
+        """
+        try:
+            elements = self._find_elements(Loc.ERROR_MESSAGES)
+            return [e.text for e in elements]
+        except Exception as e:
+            self.logger.error(f"Failed to get error messages: {str(e)}")
+            return []
+    
+    def isSignupSuccessful(self):
+        """Check if signup was successful by verifying redirect to home page
+        
+        Returns:
+            bool: True if signup was successful, False otherwise
+        """
+        try:
+            # Check if we're redirected to the home page
+            return "/#/" in self.driver.current_url
+        except Exception as e:
+            self.logger.error(f"Error checking signup success: {str(e)}")
+            return False

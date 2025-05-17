@@ -1,33 +1,27 @@
 from selenium.webdriver.common.by import By
 
-class HomePage:
-    homeNavbarBrand = (By.CSS_SELECTOR, ".navbar-brand")
-    homeNavLink = (By.CSS_SELECTOR, ".nav-link[href='/']")
-    homeNewPostLink = (By.CSS_SELECTOR, ".nav-link[href='/editor']")
-    homeSettingsLink = (By.CSS_SELECTOR, ".nav-link[href='/settings']")
-    homeProfileLink = (By.CSS_SELECTOR, ".nav-link[href='/@1']")
-    homeUserPic = (By.CSS_SELECTOR, ".user-pic")
-    homeYourFeedLink = (By.CSS_SELECTOR, ".nav-link.active")
-    homeGlobalFeedLink = (By.CSS_SELECTOR, ".nav-link:not(.active)")
-    homeArticlePreview = (By.CSS_SELECTOR, ".article-preview")
-    homePopularTagsText = (By.CSS_SELECTOR, ".sidebar p")
-    homeTagList = (By.CSS_SELECTOR, ".tag-list")## HomePage
+class HomePageLocators:
+    # ───── 네비게이션 바 ─────
+    NAVBAR_BRAND = (By.CSS_SELECTOR, ".navbar-brand")
+    NAVBAR_NAV = (By.CSS_SELECTOR, ".navbar-nav")
+    NAV_HOME_LINK = (By.CSS_SELECTOR, ".nav-item:nth-child(1) .nav-link")
+    NAV_NEW_POST_LINK = (By.CSS_SELECTOR, ".nav-item:nth-child(2) .nav-link")
+    NAV_SETTINGS_LINK = (By.CSS_SELECTOR, ".nav-item:nth-child(3) .nav-link")
+    NAV_USER_LINK = (By.CSS_SELECTOR, ".nav-item:nth-child(4) .nav-link")
+    NAV_USER_PIC = (By.CSS_SELECTOR, ".user-pic")
 
-from selenium.webdriver.common.by import By
+    # ───── 피드 탭 영역 ─────
+    TAB_YOUR_FEED = (By.CSS_SELECTOR, ".nav-link.active")
+    TAB_GLOBAL_FEED = (By.CSS_SELECTOR, ".nav-item:nth-child(2) .nav-link:not(.active)")
 
-class HomePage:
-    homeNavbarBrand = (By.CSS_SELECTOR, ".navbar-brand")
-    homeNavbarNav = (By.CSS_SELECTOR, ".navbar-nav")
-    homeNavHomeLink = (By.CSS_SELECTOR, ".nav-item:nth-child(1) .nav-link")
-    homeNavNewPostLink = (By.CSS_SELECTOR, ".nav-item:nth-child(2) .nav-link")
-    homeNavSettingsLink = (By.CSS_SELECTOR, ".nav-item:nth-child(3) .nav-link")
-    homeNavUserLink = (By.CSS_SELECTOR, ".nav-item:nth-child(4) .nav-link")
-    homeNavUserPic = (By.CSS_SELECTOR, ".user-pic")
-    homeYourFeedLink = (By.CSS_SELECTOR, ".nav-link.active")
-    homeGlobalFeedLink = (By.CSS_SELECTOR, ".nav-item:nth-child(2) .nav-link:not(.active)")
-    homeArticlePreview = (By.CSS_SELECTOR, ".article-preview")
-    homeSidebar = (By.CSS_SELECTOR, ".sidebar")
-    homePopularTagsText = (By.CSS_SELECTOR, ".sidebar p")
-    homeTagList = (By.CSS_SELECTOR, ".tag-list")
-    homeRoot = (By.ID, "root")
-    homeContainer = (By.CSS_SELECTOR, ".container.page")
+    # ───── 기사 목록 / 프리뷰 ─────
+    ARTICLE_PREVIEW = (By.CSS_SELECTOR, ".article-preview")
+
+    # ───── 사이드바 태그 ─────
+    SIDEBAR = (By.CSS_SELECTOR, ".sidebar")
+    POPULAR_TAGS_TEXT = (By.CSS_SELECTOR, ".sidebar p")
+    TAG_LIST = (By.CSS_SELECTOR, ".tag-list")
+
+    # ───── 페이지 전체 레이아웃 ─────
+    ROOT = (By.ID, "root")
+    CONTAINER = (By.CSS_SELECTOR, ".container.page")

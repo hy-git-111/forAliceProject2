@@ -1,0 +1,109 @@
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from pages.base_page import BasePage
+from locators.settings_locators import SettingsPageLocators as Loc
+
+class SettingsPage(BasePage):
+    def __init__(self, driver):
+        super().__init__(driver)
+    
+    def enterImageUrl(self, url):
+        # 이미지 URL 입력 필드에 URL 입력
+        try:
+            self._send_keys(Loc.IMAGE_INPUT, url)
+            return True
+        except Exception as e:
+            print(f"이미지 URL 입력 중 오류 발생: {str(e)}")
+            return False
+    
+    def enterUsername(self, username):
+        # 사용자 이름 입력 필드에 사용자 이름 입력
+        try:
+            self._send_keys(Loc.USERNAME_INPUT, username)
+            return True
+        except Exception as e:
+            print(f"사용자 이름 입력 중 오류 발생: {str(e)}")
+            return False
+    
+    def enterBio(self, bio):
+        # 자기소개 입력 필드에 자기소개 입력
+        try:
+            self._send_keys(Loc.BIO_INPUT, bio)
+            return True
+        except Exception as e:
+            print(f"자기소개 입력 중 오류 발생: {str(e)}")
+            return False
+    
+    def enterEmail(self, email):
+        # 이메일 입력 필드에 이메일 입력
+        try:
+            self._send_keys(Loc.EMAIL_INPUT, email)
+            return True
+        except Exception as e:
+            print(f"이메일 입력 중 오류 발생: {str(e)}")
+            return False
+    
+    def enterPassword(self, password):
+        # 비밀번호 입력 필드에 비밀번호 입력
+        try:
+            self._send_keys(Loc.PASSWORD_INPUT, password)
+            return True
+        except Exception as e:
+            print(f"비밀번호 입력 중 오류 발생: {str(e)}")
+            return False
+    
+    def clickUpdateButton(self):
+        # 업데이트 버튼 클릭
+        try:
+            self._click(Loc.UPDATE_BUTTON)
+            # 업데이트 후 페이지 전환 대기
+            WebDriverWait(self.driver, 10).until(
+                EC.url_changes(self.driver.current_url)
+            )
+            return True
+        except Exception as e:
+            print(f"업데이트 버튼 클릭 중 오류 발생: {str(e)}")
+            return False
+    
+    def updateSettings(self, image="", username="", bio="", email="", password=""):
+        # 설정 전체 업데이트 (모든 필드 선택적으로 업데이트 가능)
+        try:
+            if image:
+                self.enterImageUrl(image)
+            if username:
+                self.enterUsername(username)
+            if bio:
+                self.enterBio(bio)
+            if email:
+                self.enterEmail(email)
+            if password:
+                self.enterPassword(password)
+            
+            self.clickUpdateButton()
+            return True
+        except Exception as e:
+            print(f"설정 업데이트 중 오류 발생: {str(e)}")
+            return False
+    
+    def isSettingsPageLoaded(self):
+        # 설정 페이지가 로드되었는지 확인
+        try:
+            WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located(Loc.UPDATE_BUTTON)
+            )
+            return True
+        except Exception as e:
+            print(f"설정 페이지 로드 확인 중 오류 발생: {str(e)}")
+            return False
+    
+    def clearField(self, locator):
+        # 입력 필드 내용 지우기
+        try:
+            element = WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located(locator)
+            )
+            element.clear()
+            return True
+        except Exception as e:
+            print(f"필드 내용 지우기 중 오류 발생: {str(e)}")
+            return False

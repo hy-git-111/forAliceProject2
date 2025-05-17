@@ -1,30 +1,48 @@
-# automation/claude_generate.py
-
 import os
 import anthropic
 from dotenv import load_dotenv
+from datetime import datetime
+from prompts.library_context import COMMON_LIBRARY_CONTEXT
 
-# 기존에 등록된 환경변수가 있어도 덮어쓰기
+# ✅ .env 파일 로드
 load_dotenv(override=True)
 
-def generate_with_claude(prompt: str, llm_payload="") -> str:
+# ✅ 로그 디렉토리 생성
+LOG_DIR = "logs/claude_responses"
+os.makedirs(LOG_DIR, exist_ok=True)
+
+def generate_with_claude(
+    prompt: str,
+    llm_payload: str = "",
+    log_name_hint: str = "claude",
+    system: str = COMMON_LIBRARY_CONTEXT  # ✅ 추가된 부분
+) -> str:
     """
-    Claude API를 사용하여 프롬프트 기반 응답을 생성합니다.
-    :param prompt: Claude에게 보낼 사용자 프롬프트 문자열
-    :return: Claude의 응답 텍스트
+    Claude API를 사용하여 프롬프트 기반 응답을 생성하고 응답을 로그로 저장합니다.
     """
-    if llm_payload.strip():
-        full_content = f"{prompt}\n\n---\n\n{llm_payload}"
-    else:
-        full_content = prompt  # 구분자 넣지 않음
-    
+    full_content = f"{prompt}\n\n---\n\n{llm_payload}" if llm_payload.strip() else prompt
+
     client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
-    message = client.messages.create(
-        model="claude-3-7-sonnet-20250219",
-        max_tokens=8000,
-        temperature=0.2,
-        system="당신은 테스트 자동화 전문가입니다.",
-        messages=[{"role": "user", "content": full_content}]
-    )
-    print("✅ Claude 호출 완료")
-    return message.content[0].text.strip()
+
+    try:
+        message = client.messages.create(
+            model="claude-3-7-sonnet-20250219",
+            max_tokens=8000,
+            temperature=0.2,
+            system=system,  # ✅ system 메시지를 인자로 주입
+            messages=[{"role": "user", "content": full_content}]
+        )
+        print("✅ Claude 호출 완료")
+        response_text = message.content[0].text.strip() if message.content else "# ⚠️ Claude 응답 없음"
+    except Exception as e:
+        print("❌ Claude 호출 중 오류:", e)
+        response_text = f"# ❌ Claude 오류 발생: {str(e)}"
+
+    # ✅ 응답 로그 저장
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"{log_name_hint}_{timestamp}.txt"
+    filepath = os.path.join(LOG_DIR, filename)
+    with open(filepath, "w", encoding="utf-8") as log_file:
+        log_file.write(response_text)
+
+    return response_text

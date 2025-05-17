@@ -55,4 +55,14 @@ class LoginPage(BasePage):
         elements = self._find_elements(Loc.ERROR_MESSAGES)
         return [e.text for e in elements]
     
+    📌 참고 로케이터 예시 (login_locators.py):
+
+        EMAIL_INPUT = (By.CSS_SELECTOR, "input[type='email'][placeholder='Email']")
+        PASSWORD_INPUT = (By.CSS_SELECTOR, "input[type='password'][placeholder='Password']")
+        SIGN_IN_BUTTON = (By.CSS_SELECTOR, "button.btn-primary")
+        ERROR_MESSAGES = (By.CSS_SELECTOR, ".error-messages li")
+
+    
+    
+    
         """

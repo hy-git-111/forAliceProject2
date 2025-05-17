@@ -1,7 +1,5 @@
 from prompts.common_pages import COMMON_PAGE_CONTEXT
 
-from prompts.common_pages import COMMON_PAGE_CONTEXT
-
 ARTICLE_PAGE_PROMPT = COMMON_PAGE_CONTEXT + """
 
 🌟 목표:
@@ -71,5 +69,15 @@ class ArticlePage(BasePage):
         comment_delete_buttons = self._find_elements(Loc.DELETE_COMMENT_BUTTONS)
         if index < len(comment_delete_buttons):
             comment_delete_buttons[index].click()
-    
-        """
+
+📌 참고 로케이터 예시 (article_locators.py):
+
+TITLE = (By.CSS_SELECTOR, "a.preview-link h1")
+AUTHOR = (By.CSS_SELECTOR, "a.author")
+BODY = (By.CSS_SELECTOR, "div.article-content p")
+COMMENT_INPUT = (By.CSS_SELECTOR, "textarea[placeholder='Write a comment...']")
+POST_COMMENT_BUTTON = (By.CSS_SELECTOR, "button.btn-primary")
+COMMENT_LIST = (By.CSS_SELECTOR, "div.card-text")
+DELETE_COMMENT_BUTTONS = (By.CSS_SELECTOR, "i.ion-trash-a")
+
+"""

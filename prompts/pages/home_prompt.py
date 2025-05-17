@@ -46,4 +46,15 @@ class HomePage(BasePage):
     def getArticleTitles(self):
         elements = self._find_elements(Loc.ARTICLE_TITLE_LIST)
         return [e.text for e in elements]
+        
+    📌 참고 로케이터 예시 (home_locators.py):
+
+    YOUR_FEED_TAB = (By.CSS_SELECTOR, "a.nav-link.active")
+    GLOBAL_FEED_TAB = (By.CSS_SELECTOR, "a.nav-link:not(.active)")
+    ARTICLE_TITLE_LIST = (By.CSS_SELECTOR, "a.preview-link h1")
+    def tagElement(tagName):
+        return (By.XPATH, f"//a[@class='tag-pill tag-default' and text()='{tagName}']")
+    
+        
+        
 """

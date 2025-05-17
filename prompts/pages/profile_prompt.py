@@ -56,4 +56,12 @@ class ProfilePage(BasePage):
         # Unfollow 버튼 클릭
         self._click(Loc.UNFOLLOW_BUTTON)
         
+    📌 참고 로케이터 예시 (profile_locators.py):
+
+    USERNAME = (By.CSS_SELECTOR, "div.user-info h4")
+    USER_BIO = (By.CSS_SELECTOR, "div.user-info p")
+    FOLLOW_BUTTON = (By.CSS_SELECTOR, "button.btn-outline-secondary")
+    UNFOLLOW_BUTTON = (By.CSS_SELECTOR, "button.btn-outline-secondary")
+
+        
         """
